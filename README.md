@@ -106,8 +106,8 @@ Go back to `chrome://extensions` and click the "↻" refresh icon on the extensi
 <img width="775" height="570" alt="image" src="https://github.com/user-attachments/assets/322e04e1-f952-4d38-939f-7bb2e9d7039b" />
 <img width="384" height="602" alt="image" src="https://github.com/user-attachments/assets/16593e74-b154-4792-bfd6-5543cc605c13" />
 <img width="490" height="385" alt="image" src="https://github.com/user-attachments/assets/46acf20e-0d28-4769-9750-1941fe548e52" />
- # Known bugs
- <img width="374" height="462" alt="image" src="https://github.com/user-attachments/assets/b1978e9f-aaf5-4169-a1cc-437530e6e4d1" />
+# Known bugs
+<img width="374" height="462" alt="image" src="https://github.com/user-attachments/assets/b1978e9f-aaf5-4169-a1cc-437530e6e4d1" />
 <img width="890" height="100" alt="image" src="https://github.com/user-attachments/assets/55f7b803-aa0e-4b69-949c-704549d7373e" />
 <img width="453" height="680" alt="image" src="https://github.com/user-attachments/assets/5fbd3986-492b-476d-8c49-263b206c808c" />
 <img width="1159" height="980" alt="image" src="https://github.com/user-attachments/assets/f34f6f94-dfe8-4669-9e7b-d4eb76f7046c" />
