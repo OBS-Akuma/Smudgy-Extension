@@ -639,6 +639,253 @@ async function initMentions() {
     urlObserver.observe(document.body, { childList: true, subtree: false });
 }
 
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  CHAT COMMAND AUTOCOMPLETE
+// ═══════════════════════════════════════════════════════════════════════════════
+
+const chatCommands = {
+    '/inv': { description: 'Check inventory', category: 'Info' },
+    '/hm': { description: 'How much (check item price)', category: 'Trade' },
+    '/locate': { description: 'Locate player/items', category: 'Info' },
+    '/flip': { description: 'Flip items', category: 'Trade' },
+    '/trade cancel': { description: 'Cancel current trade', category: 'Trade' },
+    '/trade bump': { description: 'Bump trade offer', category: 'Trade' },
+    '/trade accept': { description: 'Accept trade offer', category: 'Trade' },
+    '/trade offer my:': { description: 'Offer trade (my: [items])', category: 'Trade' },
+    '/myvotes': { description: 'Check your votes', category: 'Info' },
+    '/gift': { description: 'Gift items to player', category: 'Gift' },
+    '/topgifter': { description: 'Top gifters leaderboard', category: 'Gift' },
+    '/mygift': { description: 'Check your gifts', category: 'Gift' }
+};
+
+let cmdChatInput    = null;
+let cmdSuggestionBox = null;
+let cmdSelectedIndex = -1;
+let cmdScriptActive  = false;
+
+function createCmdSuggestionBox() {
+    const box = document.createElement('div');
+    box.id = 'cmd-suggestion-box';
+    Object.assign(box.style, {
+        position: 'fixed',
+        background: '#1a1f2e',
+        border: '1px solid #2a2f3e',
+        borderRadius: '4px',
+        padding: '4px 0',
+        zIndex: '10000',
+        maxHeight: '320px',
+        overflowY: 'auto',
+        minWidth: '260px',
+        boxShadow: '0 4px 12px rgba(0,0,0,0.6)',
+        fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+        display: 'none'
+    });
+    return box;
+}
+
+function cmdIsCompleteCommand(inputText) {
+    const multiWord = ['/trade cancel', '/trade bump', '/trade accept', '/trade offer my:'];
+    for (const cmd of multiWord) {
+        if (inputText.toLowerCase().startsWith(cmd.toLowerCase() + ' ') ||
+            inputText.toLowerCase() === cmd.toLowerCase()) return true;
+    }
+    const match = inputText.match(/^\/([a-z]+)(?:\s|$)/i);
+    if (!match) return false;
+    return chatCommands.hasOwnProperty('/' + match[1].toLowerCase());
+}
+
+function cmdGetMatching(inputText) {
+    const inputLower = inputText.toLowerCase();
+
+    if (inputLower === '/trade ') return ['/trade cancel', '/trade bump', '/trade accept', '/trade offer my:'];
+    if (inputLower.startsWith('/trade ')) {
+        const after = inputLower.substring(7);
+        return ['cancel', 'bump', 'accept', 'offer my:']
+            .filter(c => c.startsWith(after))
+            .map(c => '/trade ' + c);
+    }
+
+    const match = inputText.match(/^\/([a-z]*)/i);
+    if (!match) return [];
+    const prefix = match[1].toLowerCase();
+    const singles = Object.keys(chatCommands).filter(c => !c.includes(' '));
+    return prefix ? singles.filter(c => c.toLowerCase().startsWith('/' + prefix)) : singles;
+}
+
+function cmdRenderSuggestion(cmd, index) {
+    const selected = index === cmdSelectedIndex;
+    return `<div class="kirka-cmd-suggestion" data-cmd="${cmd}" style="
+        padding: 8px 12px; cursor: pointer; transition: all 0.08s linear;
+        border-left: 2px solid ${selected ? '#4caf50' : 'transparent'};
+        background: ${selected ? '#2a2f3e' : 'transparent'}; margin: 0;">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:12px;">
+            <div style="flex:1;">
+                <span style="color:#4caf50; font-weight:600; font-size:13px;">${cmd}</span>
+                <span style="color:#6b7280; font-size:11px; margin-left:8px;">${chatCommands[cmd]?.category || 'Command'}</span>
+                <div style="color:#9ca3af; font-size:11px; margin-top:2px;">${chatCommands[cmd]?.description || 'Execute command'}</div>
+            </div>
+            <div style="color:#4caf50; font-size:10px; opacity:${selected ? '1' : '0.5'};
+                border:1px solid #2a2f3e; padding:2px 6px; border-radius:3px; background:#0f1117;">↵</div>
+        </div>
+    </div>`;
+}
+
+function cmdAttachEvents() {
+    document.querySelectorAll('.kirka-cmd-suggestion').forEach((el, idx) => {
+        el.addEventListener('mouseenter', () => { cmdSelectedIndex = idx; cmdHighlight(); });
+        el.addEventListener('click', () => cmdApply(el.getAttribute('data-cmd')));
+    });
+}
+
+function cmdHighlight() {
+    document.querySelectorAll('.kirka-cmd-suggestion').forEach((el, idx) => {
+        const on = idx === cmdSelectedIndex;
+        el.style.background = on ? '#2a2f3e' : 'transparent';
+        el.style.borderLeftColor = on ? '#4caf50' : 'transparent';
+        const key = el.querySelector('div:last-child');
+        if (key) key.style.opacity = on ? '1' : '0.5';
+        if (on) el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    });
+}
+
+function cmdApply(cmd) {
+    if (!cmdChatInput) return;
+    cmdChatInput.value = cmd + ' ';
+    cmdChatInput.focus();
+    cmdHide();
+    cmdChatInput.dispatchEvent(new Event('input', { bubbles: true }));
+}
+
+function cmdHide() {
+    if (cmdSuggestionBox) cmdSuggestionBox.style.display = 'none';
+    cmdSelectedIndex = -1;
+}
+
+function cmdPosition() {
+    if (!cmdChatInput || !cmdSuggestionBox) return;
+    const rect = cmdChatInput.getBoundingClientRect();
+    cmdSuggestionBox.style.bottom = `${window.innerHeight - rect.top + 8}px`;
+    cmdSuggestionBox.style.left   = `${rect.left}px`;
+    cmdSuggestionBox.style.width  = `${rect.width}px`;
+}
+
+function cmdUpdateSuggestions(inputText) {
+    if (cmdIsCompleteCommand(inputText)) { cmdHide(); return; }
+
+    const inputLower = inputText.toLowerCase();
+
+    // Special: /trade with no subcommand yet — show all subcommands
+    let cmdsToShow = [];
+    if (inputLower === '/trade') {
+        cmdsToShow = ['/trade cancel', '/trade bump', '/trade accept', '/trade offer my:'];
+    } else {
+        cmdsToShow = cmdGetMatching(inputText);
+    }
+
+    if (cmdsToShow.length === 0) { cmdHide(); return; }
+
+    if (!cmdSuggestionBox) {
+        cmdSuggestionBox = createCmdSuggestionBox();
+        document.body.appendChild(cmdSuggestionBox);
+    }
+
+    cmdSuggestionBox.style.display = 'block';
+    cmdPosition();
+    cmdSuggestionBox.innerHTML = cmdsToShow.map((cmd, i) => cmdRenderSuggestion(cmd, i)).join('');
+    cmdAttachEvents();
+}
+
+function cmdHandleKeyDown(e) {
+    if (!cmdSuggestionBox || cmdSuggestionBox.style.display !== 'block') return;
+    const sugs = document.querySelectorAll('.kirka-cmd-suggestion');
+    if (!sugs.length) return;
+
+    if (e.key === 'ArrowDown') { e.preventDefault(); cmdSelectedIndex = (cmdSelectedIndex + 1) % sugs.length; cmdHighlight(); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); cmdSelectedIndex = (cmdSelectedIndex - 1 + sugs.length) % sugs.length; cmdHighlight(); }
+    else if (e.key === 'Tab' || (e.key === 'Enter' && cmdSelectedIndex >= 0)) {
+        e.preventDefault();
+        const cmd = sugs[cmdSelectedIndex]?.getAttribute('data-cmd');
+        if (cmd) cmdApply(cmd);
+    } else if (e.key === 'Escape') { e.preventDefault(); cmdHide(); }
+}
+
+function cmdHandleInput() {
+    const value = cmdChatInput.value;
+    if (value.startsWith('/') && !cmdIsCompleteCommand(value)) cmdUpdateSuggestions(value);
+    else cmdHide();
+}
+
+function cmdHandleKeyPress(e) {
+    if (e.key !== 'Enter') return;
+    const message = cmdChatInput.value.trim();
+    if (!message.startsWith('/')) { cmdHide(); return; }
+
+    const multiWord = ['/trade cancel', '/trade bump', '/trade accept', '/trade offer my:'];
+    let matchedKey = null;
+    for (const mc of multiWord) {
+        if (message.toLowerCase().startsWith(mc.toLowerCase())) { matchedKey = mc; break; }
+    }
+    if (!matchedKey) {
+        const single = message.split(' ')[0].toLowerCase();
+        if (chatCommands[single]) matchedKey = single;
+    }
+
+    if (matchedKey) {
+        e.preventDefault();
+        cmdHide();
+        setTimeout(() => { cmdChatInput.value = ''; }, 10);
+    } else {
+        cmdHide();
+    }
+}
+
+function cmdSetupListeners() {
+    if (!cmdChatInput) return;
+    cmdChatInput.removeEventListener('keydown',  cmdHandleKeyDown);
+    cmdChatInput.removeEventListener('input',    cmdHandleInput);
+    cmdChatInput.removeEventListener('keypress', cmdHandleKeyPress);
+    cmdChatInput.addEventListener('keydown',  cmdHandleKeyDown);
+    cmdChatInput.addEventListener('input',    cmdHandleInput);
+    cmdChatInput.addEventListener('keypress', cmdHandleKeyPress);
+}
+
+function initChatCommands() {
+    const input = document.querySelector('input#WwMnw, input[placeholder*="MESSAGE"]');
+    if (input && input !== cmdChatInput) {
+        cmdChatInput   = input;
+        cmdScriptActive = true;
+        cmdSetupListeners();
+
+        document.addEventListener('click', (e) => {
+            if (cmdSuggestionBox && !cmdSuggestionBox.contains(e.target) && e.target !== cmdChatInput) {
+                cmdHide();
+            }
+        });
+
+        console.log('[Kirka Badges] Chat commands active');
+    } else if (!input) {
+        cmdScriptActive = false;
+    }
+}
+
+function addChatCommandStyles() {
+    if (document.getElementById('cmd-suggestion-styles')) return;
+    const style = document.createElement('style');
+    style.id = 'cmd-suggestion-styles';
+    style.textContent = `
+        #cmd-suggestion-box { animation: kirkaFadeIn 0.12s ease-out; }
+        @keyframes kirkaFadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
+        .kirka-cmd-suggestion { transition: all 0.08s linear; }
+        .kirka-cmd-suggestion:hover { background: #2a2f3e !important; border-left-color: #4caf50 !important; }
+        #cmd-suggestion-box::-webkit-scrollbar { width:6px; }
+        #cmd-suggestion-box::-webkit-scrollbar-track { background:#0f1117; border-radius:3px; }
+        #cmd-suggestion-box::-webkit-scrollbar-thumb { background:#2a2f3e; border-radius:3px; }
+        #cmd-suggestion-box::-webkit-scrollbar-thumb:hover { background:#4caf50; }
+    `;
+    document.head.appendChild(style);
+}
+
 // ═══════════════════════════════════════════════════════════════════════════════
 //  BIOTEXT BADGE SYSTEM
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -988,32 +1235,6 @@ function applyDefaultCSS() {
   
   const defaultCSS = `
 
-.nickname {
-  display: flex !important;
-  align-items: center !important;
-  flex-wrap: nowrap !important;
-  white-space: nowrap !important;
-  overflow: visible !important;
-}
-
-.kirka-nickname-span {
-  white-space: nowrap !important;
-  display: inline-block !important;
-}
-
-.kirka-badges {
-  display: inline-flex !important;
-  flex-shrink: 0 !important;
-  white-space: nowrap !important;
-}
-
-.head-right {
-  white-space: nowrap !important;
-}
-
-.you-head {
-  flex-wrap: nowrap !important;
-}
 .left-icons, .left-interface, .right-interface, .play-content, .logo, .team-section, .invite-right, .invite-left1, .invite-left2, .invite-btn {
   zoom: 0.70;
 }
@@ -2307,6 +2528,7 @@ new MutationObserver(() => {
     lastUrl = location.href;
     activeBioTextBadgeId = null;
     routeCurrentPage();
+    setTimeout(initChatCommands, 600);
   }
 }).observe(document.body, { childList: true, subtree: true });
 
@@ -2314,11 +2536,11 @@ const _pushState = history.pushState.bind(history);
 history.pushState = (...args) => {
   _pushState(...args);
   activeBioTextBadgeId = null;
-  setTimeout(routeCurrentPage, 200);
+  setTimeout(() => { routeCurrentPage(); setTimeout(initChatCommands, 600); }, 200);
 };
 window.addEventListener("popstate", () => {
   activeBioTextBadgeId = null;
-  setTimeout(routeCurrentPage, 200);
+  setTimeout(() => { routeCurrentPage(); setTimeout(initChatCommands, 600); }, 200);
 });
 
 // ─── Init ─────────────────────────────────────────────────────────────────────
@@ -2340,6 +2562,10 @@ async function init() {
 
   // Initialize mentions system
   await initMentions();
+
+  // Initialize chat command autocomplete
+  addChatCommandStyles();
+  initChatCommands();
 
   routeCurrentPage();
 }
