@@ -103,3 +103,4 @@ Go back to `chrome://extensions` and click the "↻" refresh icon on the extensi
 <img width="575" height="784" alt="image" src="https://github.com/user-attachments/assets/1bc9cdf1-065c-4056-858d-714ce03e816f" />
 <img width="775" height="570" alt="image" src="https://github.com/user-attachments/assets/322e04e1-f952-4d38-939f-7bb2e9d7039b" />
 <img width="384" height="602" alt="image" src="https://github.com/user-attachments/assets/16593e74-b154-4792-bfd6-5543cc605c13" />
+<img width="490" height="385" alt="image" src="https://github.com/user-attachments/assets/46acf20e-0d28-4769-9750-1941fe548e52" />
