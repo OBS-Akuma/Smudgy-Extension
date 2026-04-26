@@ -1,0 +1,52 @@
+{
+  "manifest_version": 3,
+  "name": "Smudgy Client",
+  "version": "1.0.0",
+  "description": "Moew some thing i keep making =^-^=",
+  "permissions": ["storage", "activeTab", "commands"],
+  "host_permissions": [
+    "https://kirka.io/*",
+    "https://api2.kirka.io/*",
+    "https://raw.githubusercontent.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://kirka.io/*"],
+      "js": ["content.js"],
+      "css": ["def.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon16.png",
+      "48": "icon48.png",
+      "128": "icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icon16.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["def.css", "popup.html"],
+      "matches": ["https://kirka.io/*"]
+    }
+  ],
+  "commands": {
+    "open-popup": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y",
+        "windows": "Ctrl+Shift+Y",
+        "mac": "Command+Shift+Y"
+      },
+      "description": "Open Kirka Badges popup"
+    }
+  }
+}

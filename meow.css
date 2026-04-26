@@ -1,0 +1,3961 @@
+/* ==========================================================================
+   KIRKA.IO UI FRAMEWORK — kirka-ui.css
+   Extracted from Kirka.io browser game source files.
+   Fonts: Rowdies (headers/buttons), Exo 2 (body/UI)
+   ========================================================================== */
+
+@import url(https://fonts.googleapis.com/css2?family=Rowdies:wght@700&display=swap);
+@import url(https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap);
+
+
+/* ==========================================================================
+   SECTION 1 — CSS CUSTOM PROPERTIES (DESIGN TOKENS)
+   ========================================================================== */
+
+:root {
+  /* --- Core Palette --- */
+  --black: #000;
+  --white: #fff;
+  --black-5: #1a1f2e;
+
+  /* --- Primary Dark Blue Scale (main background / panel colors) --- */
+  /* Obfuscated internally as --wwWMNnW, mapped to human-readable names here */
+  --panel-1:   #2f3957;   /* main panel bg               (--wwWMNnW-1) */
+  --panel-2:   #37477c;   /* hover / lighter panel        (--wwWMNnW-2) */
+  --panel-3:   #202639;   /* darkest panel / container bg (--wwWMNnW-3) */
+  --panel-4:   #3c4b68;   /* card / item row bg           (--wwWMNnW-4) */
+  --panel-5:   #3b4975;   /* icon-btn bg                  (--wwWMNnW-5) */
+  --panel-6:   #26335b;   /* border / deep shadow tone    (--wwWMNnW-6) */
+
+  /* --- Accent Gold / XP color --- */
+  /* Obfuscated internally as --WwnNwMWm */
+  --gold-1:    #ffb914;   /* primary accent / progress fill (--WwnNwMWm-1) */
+  --gold-2:    #fcd373;   /* lighter gold / hover           (--WwnNwMWm-2) */
+  --gold-3:    #b6830e;   /* darker gold / border           (--WwnNwMWm-3) */
+
+  /* --- Orange accent --- */
+  --orange-1:  #f2994a;
+
+  /* --- Purple / premium accent --- */
+  /* Obfuscated internally as --WwwnmMW */
+  --purple-1:  #9a39d3;
+  --purple-2:  #af51e6;
+  --purple-3:  #692c8c;
+
+  /* --- Red / danger --- */
+  --red-1:     #e24f4f;
+  --red-2:     #f66666;
+  --red-3:     #cb1414;
+  --red-4:     #e73c3c;
+  --red-5:     #e73131;
+
+  /* --- Blue / action --- */
+  --blue-1:    #453ad4;
+  --blue-2:    #545ffc;
+  --blue-3:    #222aa0;
+  --blue-4:    #2f80ed;
+  --blue-5:    #4f94f1;
+  --blue-6:    #256fd3;
+
+  /* --- Green / success --- */
+  /* Obfuscated internally as --WmwnMwN */
+  --green-1:   #1cce6c;
+  --green-2:   #24ff2f;
+  --green-3:   #07960e;
+  --green-4:   #35e785;
+
+  /* --- Gray / text --- */
+  --gray-1:    #f2f2f2;
+  --gray-2:    #bdbdbd;
+
+  /* --- Discord / social colors --- */
+  --discord-bg:        #7289da;
+  --discord-hover:     #91a3e5;
+  --discord-border-t:  #91a3e5;
+  --discord-border-b:  #526cc9;
+  --client-bg:         #545f81;
+  --client-hover:      #4a5471;
+
+  /* --- Rarity tier colors --- */
+  --rarity-common-bg:    #939393;
+  --rarity-rare-start:   #2f83fd;
+  --rarity-rare-end:     #5fc5ff;
+  --rarity-epic-start:   #ab16ea;
+  --rarity-epic-end:     #d660ff;
+  --rarity-legendary-s:  #fdbb2f;
+  --rarity-legendary-e:  #fddc2f;
+  --rarity-mythical:     #b2fecb;   /* teal-mint for mythical */
+
+  /* --- Background / environment --- */
+  --bg-main:           #26335b;
+  --bg-gradient:       linear-gradient(103.28deg, #26335b 7.06%, #26335b 90.75%);
+  --bg-radial:         radial-gradient(74.74% 74.74% at 51.12% 51.68%, rgba(23,73,197,.9) 0, rgba(28,46,113,0) 100%);
+  --bg-dark:           #12151f;
+  --container-gradient:linear-gradient(103.28deg, #262f4b 7.06%, #202639 90.75%);
+
+  /* --- Typography --- */
+  --font-display:   'Rowdies', sans-serif;
+  --font-body:      'Exo 2', sans-serif;
+  --font-mono:      monospace;
+
+  /* --- Font Sizes (responsive, rem-based) --- */
+  --text-xs:   0.75rem;
+  --text-sm:   0.875rem;
+  --text-base: 1rem;
+  --text-md:   1.125rem;
+  --text-lg:   1.25rem;
+  --text-xl:   1.5rem;
+  --text-2xl:  2rem;
+  --text-3xl:  3rem;
+  --text-4xl:  4rem;
+
+  /* --- Spacing --- */
+  --space-1:  0.2rem;
+  --space-2:  0.4rem;
+  --space-3:  0.5rem;
+  --space-4:  0.8rem;
+  --space-5:  1rem;
+  --space-6:  1.25rem;
+  --space-7:  1.5rem;
+  --space-8:  2rem;
+
+  /* --- Border radius --- */
+  --radius-xs:   2px;
+  --radius-sm:   3px;
+  --radius-md:   5px;
+  --radius-lg:   8px;
+  --radius-xl:   12px;
+  --radius-2xl:  20px;   /* 1.25rem */
+  --radius-pill: 100%;
+  --radius-circle: 50%;
+  --radius-btn:  0.2em;   /* skewed button radius */
+
+  /* --- Box Shadows --- */
+  --shadow-sm:   0 2px 0 rgba(0,0,0,.31);
+  --shadow-md:   0 4px 0 rgba(0,0,0,.31);
+  --shadow-lg:   0 6px 18px rgba(0,0,0,.4);
+  --shadow-card: 4px 4px 5px 5px rgba(12,14,18,.25);
+  --shadow-panel:0 0.25rem 0 rgba(0,0,0,.31);
+  --shadow-btn:  0 0.15rem 0 rgba(0,0,0,.315);
+  --shadow-deep: 0 20px 60px -2px rgba(27,33,58,.4);
+  --shadow-inset:0 1px 2px rgba(0,0,0,.4), inset 0 0 8px rgba(0,0,0,.4);
+
+  /* --- Transitions --- */
+  --transition-fast: all 0.15s ease;
+  --transition-base: all 0.3s ease;
+  --transition-slow: all 0.5s ease;
+
+  /* --- z-index scale --- */
+  --z-bg:        0;
+  --z-panel:     3;
+  --z-overlay:   4;
+  --z-modal:     999;
+  --z-hud:       99999;
+}
+
+
+/* ==========================================================================
+   SECTION 2 — RESET & BASE STYLES
+   ========================================================================== */
+
+/* Normalize basics */
+html {
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+/* Responsive font scaling — mirrors the game's media query ladder */
+@media (max-width: 1600px) { html { font-size: 15px; } }
+@media (max-width: 1440px) { html { font-size: 14px; } }
+@media (max-width: 1280px) { html { font-size: 13px; } }
+@media (max-width: 1100px) { html { font-size: 12px; } }
+@media (max-width: 900px)  { html { font-size: 10px; } }
+@media (max-width: 768px)  { html { font-size: 9px; } }
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: var(--panel-4) rgba(0,0,0,.4);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-body);
+  background-color: var(--bg-main);
+  color: var(--white);
+  font-weight: 400;
+  line-height: 1.4;
+  overflow: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+canvas {
+  display: block;
+}
+
+
+/* ==========================================================================
+   SECTION 3 — SCROLLBAR
+   ========================================================================== */
+
+::-webkit-scrollbar {
+  width: 7px;
+  background-color: rgba(0,0,0,.4);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--panel-1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--panel-4);
+}
+
+
+/* ==========================================================================
+   SECTION 4 — TYPOGRAPHY UTILITIES
+   ========================================================================== */
+
+/* Text shadow styles — game uses thick outline-style shadows */
+.text-1 {
+  /* Strong outlined text — used on icon labels, HUD text */
+  text-shadow:
+    -1px -1px 0 #0f0f0f,
+     1px -1px 0 #0f0f0f,
+    -1px  1px 0 #0f0f0f,
+     1px  1px 0 #0f0f0f,
+     0 0.13rem 1px rgba(0,0,0,.486);
+}
+
+.text-2 {
+  /* Softer outlined text — used on most body labels */
+  text-shadow:
+    -1px -1px 0 #0f0f0f,
+     1px -1px 0 #0f0f0f,
+    -1px  1px 0 #0f0f0f,
+     1px  1px 0 #0f0f0f;
+}
+
+.text-shadow-soft {
+  text-shadow: 0 1px 0 rgba(0,0,0,.7);
+}
+
+.text-shadow-hud {
+  text-shadow: 0 0.25rem 0.33rem rgba(0,0,0,.45);
+}
+
+/* Font sizes */
+.text-xs   { font-size: var(--text-xs); }
+.text-sm   { font-size: var(--text-sm); }
+.text-base { font-size: var(--text-base); }
+.text-md   { font-size: var(--text-md); }
+.text-lg   { font-size: var(--text-lg); }
+.text-xl   { font-size: var(--text-xl); }
+.text-2xl  { font-size: var(--text-2xl); }
+.text-3xl  { font-size: var(--text-3xl); }
+.text-4xl  { font-size: var(--text-4xl); }
+
+/* Font weights */
+.font-normal  { font-weight: 400; }
+.font-medium  { font-weight: 500; }
+.font-semi    { font-weight: 600; }
+.font-bold    { font-weight: 700; }
+.font-black   { font-weight: 900; }
+
+/* Font families */
+.font-display { font-family: var(--font-display); }
+.font-body    { font-family: var(--font-body); }
+.font-mono    { font-family: var(--font-mono); }
+
+/* Text transforms */
+.uppercase    { text-transform: uppercase; }
+.lowercase    { text-transform: lowercase; }
+.italic       { font-style: italic; }
+
+/* Text colors */
+.text-white   { color: var(--white); }
+.text-gold    { color: var(--gold-1); }
+.text-red     { color: var(--red-1); }
+.text-green   { color: var(--green-1); }
+.text-blue    { color: var(--blue-4); }
+.text-purple  { color: var(--purple-1); }
+.text-gray    { color: var(--gray-1); }
+.text-gray-dim{ color: var(--gray-2); }
+.text-muted   { color: rgba(255,255,255,.6); }
+.text-dim     { color: rgba(255,255,255,.75); }
+
+
+/* ==========================================================================
+   SECTION 5 — LAYOUT UTILITIES
+   ========================================================================== */
+
+/* Flex helpers */
+.flex          { display: flex; }
+.flex-col      { display: flex; flex-direction: column; }
+.flex-center   { display: flex; justify-content: center; align-items: center; }
+.flex-between  { display: flex; justify-content: space-between; align-items: center; }
+.flex-end      { display: flex; justify-content: flex-end; align-items: center; }
+.flex-start    { display: flex; justify-content: flex-start; align-items: center; }
+.flex-wrap     { flex-wrap: wrap; }
+.flex-1        { flex: 1; }
+.flex-auto     { flex: 0 1 auto; }
+.items-center  { align-items: center; }
+.items-start   { align-items: flex-start; }
+.items-end     { align-items: flex-end; }
+.justify-center{ justify-content: center; }
+.justify-between{ justify-content: space-between; }
+.justify-end   { justify-content: flex-end; }
+.gap-1         { gap: var(--space-1); }
+.gap-2         { gap: var(--space-2); }
+.gap-3         { gap: var(--space-3); }
+.gap-4         { gap: var(--space-4); }
+.gap-5         { gap: var(--space-5); }
+
+/* Position helpers */
+.relative  { position: relative; }
+.absolute  { position: absolute; }
+.fixed     { position: fixed; }
+.inset-0   { top: 0; left: 0; right: 0; bottom: 0; }
+
+/* Size helpers */
+.w-full    { width: 100%; }
+.h-full    { height: 100%; }
+.w-screen  { width: 100vw; }
+.h-screen  { height: 100vh; }
+
+/* Overflow */
+.overflow-hidden { overflow: hidden; }
+.overflow-y-auto { overflow-y: auto; }
+.overflow-y-scroll { overflow-y: scroll; }
+
+/* Pointer events */
+.pointer-none  { pointer-events: none; }
+.pointer-auto  { pointer-events: auto; }
+
+/* Opacity helpers */
+.opacity-50    { opacity: .5; }
+.opacity-75    { opacity: .75; }
+.opacity-dim   { opacity: .3; }
+
+/* Z-index helpers */
+.z-bg     { z-index: var(--z-bg); }
+.z-panel  { z-index: var(--z-panel); }
+.z-overlay{ z-index: var(--z-overlay); }
+.z-modal  { z-index: var(--z-modal); }
+.z-hud    { z-index: var(--z-hud); }
+
+
+/* ==========================================================================
+   SECTION 6 — BACKGROUND & ENVIRONMENT
+   ========================================================================== */
+
+/*
+  Full-screen game background.
+  Usage:
+    <div class="game-bg">
+      <div class="game-bg__pattern"></div>
+      <div class="game-bg__radial"></div>
+    </div>
+*/
+
+.game-bg {
+  position: absolute;
+  height: 100vh;
+  width: 100%;
+  pointer-events: none;
+  background: var(--bg-main);
+  background: var(--bg-gradient);
+}
+
+/* Tiled diamond pattern overlay */
+.game-bg__pattern {
+  width: 100%;
+  height: 100vh;
+  opacity: .1;
+  /* The actual game uses a base64 tiled PNG. Replace with your own tiled asset: */
+  /* background: url('pattern.png') repeat; */
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(255,255,255,.03) 0px,
+    rgba(255,255,255,.03) 1px,
+    transparent 1px,
+    transparent 10px
+  );
+}
+
+/* Central radial light bloom */
+.game-bg__radial {
+  position: absolute;
+  height: 100vh;
+  width: 100%;
+  top: 0;
+  background: var(--bg-radial);
+}
+
+
+/* ==========================================================================
+   SECTION 7 — THE INTERFACE SHELL
+   ========================================================================== */
+
+/*
+  Wrapper that holds all UI panels over the canvas.
+  Usage:
+    <div class="interface text-2">
+      <div class="left-interface">...</div>
+      <div class="right-interface">...</div>
+      <div class="left-icons">...</div>
+    </div>
+*/
+
+.interface {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: var(--z-panel);
+  font-family: var(--font-body);
+}
+
+/* Top-left user panel area */
+.left-interface {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  transform-origin: top left;
+}
+
+/* Top-right settings / social panel area */
+.right-interface {
+  position: absolute;
+  top: 0;
+  right: 0;
+  pointer-events: none;
+  transform-origin: top right;
+}
+
+
+/* ==========================================================================
+   SECTION 8 — CARD / PANEL CONTAINER
+   ========================================================================== */
+
+/*
+  The fundamental panel building block used across the entire UI.
+  Has a 3D border effect using top/bottom border colors.
+
+  Usage:
+    <div class="card-cont">content</div>
+    <div class="card-cont card-1">hoverable card</div>
+
+  Modifier: hover="" attribute makes it respond to hover
+*/
+
+.card-cont {
+  background: var(--panel-5);
+  border-bottom: 6px solid var(--panel-6);
+  border-top: 4px solid #4d5c8b;
+  border-right: 4px solid #3e4d7c;
+  border-left: 4px solid #3e4d7c;
+  position: relative;
+  color: var(--white);
+  font-family: var(--font-body);
+}
+
+/* Hover-enabled variant */
+.card-cont[hover]:hover,
+.card-cont.hoverable:hover {
+  background-color: var(--panel-2);
+}
+
+/* Rounded large card (store / profile cards) */
+.card-cont.card-lg {
+  background: var(--panel-1);
+  box-shadow: var(--shadow-panel);
+  border-radius: var(--radius-2xl);
+  border: none;
+}
+
+/* Slightly elevated card */
+.card-cont.card-1 {
+  box-shadow: var(--shadow-sm);
+}
+
+/* Dark contained background panel */
+.panel {
+  background: rgba(59, 73, 117, .7);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-sm);
+  padding: .5rem .75rem;
+}
+
+/* Main window container background */
+.container {
+  background: var(--container-gradient);
+  background-color: var(--panel-3);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-family: var(--font-body);
+  box-shadow: var(--shadow-card);
+  height: 100%;
+}
+
+/* Container used in modal windows */
+.container-card {
+  width: 80vw;
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 0 6.98px 4.36px rgba(12,14,18,.25);
+  z-index: 20;
+  position: relative;
+}
+
+/* Scrollable content area inside a window */
+.content {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  overflow-y: auto;
+}
+
+
+/* ==========================================================================
+   SECTION 9 — MODAL / WINDOW SYSTEM
+   ========================================================================== */
+
+/*
+  Kirka uses vue-final-modal. These classes replicate its structure.
+
+  Usage:
+    <div class="vm--container">
+      <div class="vm--overlay"></div>
+      <div class="vm--modal">
+        <div class="top-bar">
+          <div class="home"><svg class="icon-home"></svg></div>
+          <div class="name-page">WINDOW TITLE</div>
+          <div class="close"><svg class="icon-close"></svg></div>
+        </div>
+        <div class="content">...</div>
+      </div>
+    </div>
+
+  Transitions (add class to vm--container):
+    .vm-transition--modal-enter  — slides in from top
+    .vm-transition--overlay-enter — fades in overlay
+*/
+
+.vm--container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: var(--z-modal);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  filter: drop-shadow(-100px -50px 200px #000);
+}
+
+.vm--overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0,0,0,.45);
+  box-sizing: border-box;
+}
+
+.vm--modal {
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-deep);
+  background: var(--panel-3);
+  color: var(--white);
+  font-family: var(--font-body);
+  min-width: 40rem;
+}
+
+/* Window top bar — has home icon + title + close button */
+.top-bar {
+  display: flex;
+  max-height: 2.188rem;
+  width: 100%;
+  justify-content: space-between;
+  height: 100%;
+  background-color: var(--panel-1);
+  border-top-right-radius: 0.313rem;
+  border-top-left-radius: 0.313rem;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 0.063rem 0.25rem #181c28;
+}
+
+.top-bar .home {
+  background-color: var(--panel-4);
+  width: 2.563rem;
+  height: 2.188rem;
+  border-top-left-radius: 0.313rem;
+  border-right: 0.125rem solid var(--panel-1);
+  cursor: pointer;
+  transition: var(--transition-base);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.top-bar .home:hover {
+  background-color: var(--panel-5);
+}
+
+.top-bar .icon-home {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--white);
+}
+
+.top-bar .name-page {
+  font-weight: 100;
+  height: 100%;
+  padding: 0 0.8rem;
+  color: var(--white);
+  font-size: 1.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(24,28,40,.25);
+  border-radius: 0 0.313rem 0.313rem 0;
+  background-color: var(--panel-2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.top-bar .close {
+  height: 2.188rem;
+  width: 2.188rem;
+  background-color: var(--red-1);
+  border-top-right-radius: 0.313rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.top-bar .close:hover {
+  background-color: var(--red-4);
+}
+
+.top-bar .icon-close {
+  color: #575757;
+  cursor: pointer;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.top-bar .icon-close:hover {
+  color: #737373;
+}
+
+/* Vue modal transition classes */
+.vm-transition--overlay-enter-active,
+.vm-transition--overlay-leave-active {
+  transition: opacity 50ms;
+}
+
+.vm-transition--overlay-enter,
+.vm-transition--overlay-leave-active {
+  opacity: 0;
+}
+
+.vm-transition--modal-enter-active,
+.vm-transition--modal-leave-active {
+  transition: all 400ms;
+}
+
+.vm-transition--modal-enter,
+.vm-transition--modal-leave-active {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+/* vue-dialog (confirm dialog) */
+.vue-dialog {
+  font-size: 14px;
+  font-family: var(--font-body);
+}
+
+.vue-dialog div {
+  box-sizing: border-box;
+}
+
+.vue-dialog-content {
+  flex: 1 0 auto;
+  width: 100%;
+  padding: 14px;
+}
+
+.vue-dialog-content-title {
+  font-weight: 600;
+  padding-bottom: 14px;
+}
+
+.vue-dialog-buttons {
+  display: flex;
+  flex: 0 1 auto;
+  width: 100%;
+  border-top: 1px solid #eee;
+}
+
+.vue-dialog-button {
+  font-size: inherit;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  cursor: pointer;
+  box-sizing: border-box;
+  line-height: 40px;
+  height: 40px;
+  color: inherit;
+  font: inherit;
+  outline: none;
+  flex: 1;
+}
+
+.vue-dialog-button:hover { background: rgba(255,255,255,.05); }
+.vue-dialog-button:active { background: rgba(255,255,255,.10); }
+
+.vue-dialog-button:not(:first-of-type) {
+  border-left: 1px solid rgba(255,255,255,.1);
+}
+
+
+/* ==========================================================================
+   SECTION 10 — BUTTONS
+   ========================================================================== */
+
+/*
+  The primary skewed button. Used for PLAY, CREATE, JOIN, etc.
+
+  Usage:
+    <button class="button" style="background-color: var(--gold-1);
+      --hover-color: var(--gold-2); --top: var(--gold-2); --bottom: var(--gold-3);">
+      <div class="triangle"></div>
+      <div class="text">PLAY</div>
+      <div class="btn-borders">
+        <div class="border-top border"></div>
+        <div class="border-bottom border"></div>
+      </div>
+    </button>
+
+  Variants:
+    .button              — default skewed (italic) style
+    .button.rectangle    — non-skewed, straight edges
+    .button.shiny        — adds a light-sweep shimmer animation
+    .button.pulse        — adds a scale pulse animation
+
+  Common background combos:
+    Gold/Play:   background: var(--gold-1); --hover-color: var(--gold-2); --top: var(--gold-2); --bottom: var(--gold-3);
+    Blue/Create: background: var(--blue-4); --hover-color: var(--blue-5); --top: var(--blue-5); --bottom: var(--blue-6);
+    Red/Danger:  background: var(--red-1);  --hover-color: var(--red-2);  --top: var(--red-2);  --bottom: var(--red-3);
+    Green:       background: var(--green-1);--hover-color: var(--green-4);--top: var(--green-4);--bottom: var(--green-3);
+*/
+
+.button {
+  --hover-color: var(--gold-2);
+  --skew: -10deg;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  position: relative;
+  color: var(--white);
+  font-size: 1rem;
+  transition: var(--transition-base);
+  font-family: var(--font-display);
+  padding: 0.9em 1.4em;
+  transform: skew(var(--skew));
+  font-weight: 900;
+  overflow: hidden;
+  text-transform: uppercase;
+  border-radius: var(--radius-btn);
+  outline: none;
+  text-shadow: 0 0.1em 0 #000;
+  -webkit-text-stroke: 1px var(--black);
+  box-shadow: var(--shadow-btn);
+  cursor: pointer;
+  background-color: var(--gold-1);
+}
+
+/* 3D border top/bottom effect on button */
+.button::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: calc(-0.2rem - 1px);
+  bottom: calc(-0.25rem - 1px);
+  left: 0;
+  right: 0;
+  border-radius: 0.188rem;
+  border: 0.02em solid var(--black);
+  border-bottom: 2px solid var(--black);
+}
+
+.button:active {
+  transform: skew(var(--skew)) scale(0.9);
+}
+
+.button:hover {
+  background: var(--hover-color) !important;
+}
+
+/* Text inside button — counter-skews to stay straight */
+.button .text {
+  transform: skew(10deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Rectangle variant — no skew */
+.button.rectangle {
+  --skew: 0deg;
+}
+
+.button.rectangle .text {
+  transform: none;
+}
+
+/* The decorative triangle in top-left corner of button */
+.button .triangle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 12px 12px 0 0;
+  border-color: rgba(0,0,0,.2) transparent transparent transparent;
+}
+
+/* The border highlight lines */
+.button .btn-borders,
+.button .WwnNWmwM {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.button .border {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+}
+
+.button .border-top {
+  top: 0;
+  background: linear-gradient(to right, transparent, var(--top, rgba(255,255,255,.3)), transparent);
+}
+
+.button .border-bottom {
+  bottom: 0;
+  background: linear-gradient(to right, transparent, var(--bottom, rgba(0,0,0,.3)), transparent);
+}
+
+/* Shiny shimmer animation */
+.button.shiny::before {
+  position: absolute;
+  content: "";
+  display: inline-block;
+  top: -11.25rem;
+  left: 0;
+  width: 1.875rem;
+  height: 100%;
+  background-color: #fff;
+  animation: btn-shiny 3s ease-in-out infinite;
+}
+
+@keyframes btn-shiny {
+  0%   { transform: scale(0) rotate(45deg); opacity: 0; }
+  80%  { transform: scale(0) rotate(45deg); opacity: 0.5; }
+  81%  { transform: scale(4) rotate(45deg); opacity: 1; }
+  100% { transform: scale(50) rotate(45deg); opacity: 0; }
+}
+
+/* Pulse scale animation — used on daily rewards button */
+.button.pulse {
+  animation: btn-pulse 2s ease-in-out infinite;
+}
+
+@keyframes btn-pulse {
+  0%, 100% { scale: 1; }
+  50%       { scale: 1.03; }
+}
+
+/* Loading spinner inside button */
+.button .loading {
+  margin-top: -0.2rem;
+  animation: btn-rotate 0.8s linear infinite;
+  width: 1.2em;
+  height: 1.2em;
+}
+
+@keyframes btn-rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Size variants */
+.button.btn-sm  { font-size: 0.75rem !important; padding: 0.5em 1em; }
+.button.btn-md  { font-size: 1rem;   padding: 0.9em 1.4em; width: 250px; height: 60px; }
+.button.btn-lg  { font-size: 1.25rem; padding: 1em 2em; }
+.button.btn-xl  { font-size: 3.25rem !important; width: 384px; box-shadow: 0 5.5px 0 rgba(0,0,0,.5) !important; font-style: italic; }
+.button.btn-wide { width: 100%; }
+
+/* Classic round icon button */
+.classic-btn {
+  background: rgba(32,38,57,.75);
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  border: none;
+  color: var(--white);
+  transition: var(--transition-base);
+}
+
+.classic-btn:hover { background: rgba(32,38,57,.9); }
+
+
+/* ==========================================================================
+   SECTION 11 — INPUTS & FORM ELEMENTS
+   ========================================================================== */
+
+/*
+  Usage:
+    <div class="input-wrapper">
+      <label class="label">Username</label>
+      <input type="text" class="input" placeholder="Enter name...">
+    </div>
+
+    <div class="input-wrapper">
+      <div class="input input--select">
+        <div class="selected">Option A</div>
+        <div class="items">
+          <div>Option A</div>
+          <div>Option B</div>
+        </div>
+      </div>
+    </div>
+*/
+
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.input {
+  border: 0.125rem solid var(--panel-3);
+  background: var(--panel-1);
+  outline: none;
+  width: 100%;
+  height: 2.875rem;
+  padding-left: 0.5rem;
+  box-sizing: border-box;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--gray-1);
+  box-shadow: var(--shadow-inset);
+  border-radius: 0.25rem;
+  font-family: var(--font-body);
+  transition: var(--transition-base);
+}
+
+.input::placeholder {
+  color: rgba(255,255,255,.342);
+}
+
+.input:focus {
+  border-color: var(--panel-4);
+  outline: none;
+}
+
+/* Select / dropdown variant */
+.input.input--select {
+  cursor: pointer;
+  text-align: left;
+  line-height: 2.875rem;
+  padding-left: 0.5em;
+  user-select: none;
+  position: relative;
+}
+
+.input.input--select .selected::after {
+  position: absolute;
+  content: "";
+  top: 1.3rem;
+  right: 1em;
+  width: 0;
+  height: 0;
+  border: 5px solid transparent;
+  border-color: #fff transparent transparent transparent;
+}
+
+.input.input--select.open .selected {
+  border-radius: 6px 6px 0 0;
+}
+
+.input.input--select .items {
+  background: var(--panel-1);
+  color: #fff;
+  border-radius: 0 0 6px 6px;
+  overflow: hidden;
+  box-shadow: var(--shadow-inset);
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  max-height: 16rem;
+  overflow-y: scroll;
+  top: 100%;
+}
+
+.input.input--select .items div {
+  color: #fff;
+  padding-left: 0.5em;
+  height: 2.875rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.input.input--select .items div:hover {
+  background-color: var(--panel-5);
+}
+
+/* Keybind input — larger for settings screen */
+.keybind-input {
+  font-size: 3rem !important;
+  width: 9.5rem !important;
+  background: rgba(32,38,57,.75);
+  border: 2px solid var(--panel-4);
+  border-radius: var(--radius-sm);
+  color: var(--white);
+  text-align: center;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: var(--transition-base);
+}
+
+.keybind-input:focus,
+.keybind-input.focus {
+  border-color: var(--gold-1);
+  opacity: 0.7;
+}
+
+/* Label for form fields */
+.label {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 0.3rem;
+}
+
+/* Color picker input (options screen) */
+.color-input {
+  width: 3rem;
+  height: 2rem;
+  border: 2px solid var(--panel-4);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  background: none;
+  padding: 0;
+}
+
+/* Range slider */
+.range {
+  width: 22rem;
+  max-width: 15rem;
+  margin-top: 0.5rem;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 0.4rem;
+  background: var(--panel-4);
+  border-radius: var(--radius-pill);
+  outline: none;
+}
+
+.range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 1.2rem;
+  height: 1.2rem;
+  background: var(--gold-1);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,.4);
+}
+
+.range::-moz-range-thumb {
+  width: 1.2rem;
+  height: 1.2rem;
+  background: var(--gold-1);
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
+
+/* Custom checkbox */
+.custom-checkbox {
+  cursor: pointer;
+}
+
+.custom-checkbox > input[type="checkbox"] {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+
+.custom-checkbox > span {
+  display: inline-flex;
+  align-items: center;
+  user-select: none;
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+}
+
+.custom-checkbox > span::before {
+  content: "";
+  display: inline-block;
+  width: 1.3em;
+  height: 1.3em;
+  flex-shrink: 0;
+  flex-grow: 0;
+  margin-top: 0.3em;
+  border: 0.15rem solid var(--panel-4);
+  border-radius: 0.25em;
+  margin-right: 0.5em;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  background-size: 50% 50%;
+  background-color: var(--panel-1);
+}
+
+.custom-checkbox > input:checked + span::before {
+  background-color: var(--gold-1);
+  border-color: var(--gold-3);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='hsl(42, 85%, 100%)' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
+}
+
+.custom-checkbox > input:not(:disabled):not(:checked) + span:hover::before {
+  border-color: var(--panel-2);
+}
+
+.custom-checkbox > input:disabled + span::before {
+  background-color: var(--panel-4);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+/* ==========================================================================
+   SECTION 12 — TABS
+   ========================================================================== */
+
+/*
+  Usage:
+    <div class="tabs-wrapper">
+      <div class="tabs">
+        <div class="tab selected">DAILY QUESTS</div>
+        <div class="tab">EVENT QUESTS</div>
+      </div>
+    </div>
+    <div class="tab-content">...</div>
+
+  Window-style tabs (inside a modal header):
+    <div class="tab-header">
+      <div class="tab active">GENERAL</div>
+      <div class="tab">GRAPHICS</div>
+    </div>
+    <div class="tab-content">...</div>
+*/
+
+/* Simple floating tabs (quest panel) */
+.tabs-wrapper {
+  padding: 0.2rem;
+}
+
+.tabs {
+  display: flex;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.tab {
+  background-color: var(--panel-5);
+  border-radius: var(--radius-xs);
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: var(--transition-base);
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tab:hover {
+  background-color: var(--panel-1);
+}
+
+.tab.selected,
+.tab.active {
+  background-color: var(--panel-1);
+}
+
+/* Modal header tab strip */
+.tab-header {
+  display: flex;
+  height: 2.3rem;
+  width: 100%;
+  background-color: var(--panel-2);
+  color: var(--white);
+}
+
+.tab-header .tab {
+  border-radius: 0;
+  padding: 0.5rem 0.8rem;
+  font-size: 1.25rem;
+  border-right: 1px solid rgba(255,255,255,0);
+  border-left:  1px solid rgba(255,255,255,0);
+  background: transparent;
+}
+
+.tab-header .tab:hover {
+  color: var(--gold-1);
+  background-color: var(--panel-4);
+  border-right: 1px solid var(--panel-1);
+  border-left:  1px solid var(--panel-1);
+}
+
+.tab-header .tab.active {
+  background-color: var(--panel-1);
+  color: var(--gold-1);
+}
+
+.tab-content {
+  padding-top: 3rem;
+  padding-bottom: 5rem;
+}
+
+
+/* ==========================================================================
+   SECTION 13 — SIDEBAR NAVIGATION (LEFT ICONS)
+   ========================================================================== */
+
+/*
+  Vertical icon sidebar on the left edge of the lobby.
+  Usage:
+    <div class="left-icons">
+      <div class="icon-btn text-1 active">
+        <div class="wrapper">
+          <svg class="icon svg-icon svg-icon--__home__"></svg>
+          <div class="text-icon">HUB</div>
+        </div>
+      </div>
+      ...
+    </div>
+
+  Icon names (for svg-icon--__NAME__ class):
+    __home__, __market__, __server__, __quests__, __friends__,
+    __chest__, __map-editor__, __settings__, __clock-full__,
+    __coin__, __diamond__, __edit__, __add__, __close__
+*/
+
+.left-icons {
+  background-color: var(--panel-5);
+  border-radius: var(--radius-xs);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: absolute;
+  left: 0;
+  top: 114px;
+  bottom: 0;
+  z-index: 9;
+  transform-origin: top left;
+  pointer-events: auto;
+}
+
+.icon-btn {
+  background-color: var(--panel-5);
+  width: 139px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  cursor: pointer;
+  pointer-events: auto;
+  font-family: var(--font-body);
+  font-weight: 700;
+  border: 4px solid #3e4d7c;
+  border-bottom: solid 4px var(--panel-6);
+  border-top: 4px solid #4d5c8b;
+  transition: var(--transition-base);
+}
+
+.icon-btn:hover > .wrapper {
+  transform: translateY(-12.8px);
+}
+
+.icon-btn .wrapper {
+  transition: var(--transition-slow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.icon-btn .icon {
+  height: 28px !important;
+  width: 51px !important;
+  filter: drop-shadow(0 1px 1px black);
+}
+
+.icon-btn .text-icon {
+  font-size: 0.875rem;
+  margin-top: 4px;
+}
+
+/* SVG icon utility */
+.svg-icon {
+  display: inline-block;
+  fill: currentColor;
+}
+
+
+/* ==========================================================================
+   SECTION 14 — USER / AUTH PANEL
+   ========================================================================== */
+
+/*
+  Usage:
+    <div class="auth-user">
+      <div class="profile">
+        <div class="card-cont avatar-info" hover="">
+          <div class="avatar"></div>
+          <div class="username">PlayerName</div>
+        </div>
+        <div class="card-cont user-info" hover="">
+          <div class="progress-lvl">
+            <div class="progress-top">
+              <div class="level-cont">
+                <div class="level-value">42</div>
+                <span class="level-text">lvl</span>
+              </div>
+              <div class="exp-values">1250 / 5000</div>
+            </div>
+            <div class="progress-line">
+              <div class="progress" style="width: 25%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+*/
+
+.auth-user {
+  pointer-events: auto;
+}
+
+.profile {
+  display: flex;
+  width: 100%;
+}
+
+.avatar-info,
+.user-info {
+  height: 114px;
+}
+
+.avatar-info {
+  margin-right: 8px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 139px;
+}
+
+.user-info {
+  width: 250px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 12px;
+  border-radius: 0 0 8px 0;
+}
+
+.username {
+  color: var(--white);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Avatar sprite — displayed via background-image + background-position */
+.avatar {
+  width: 64px;
+  height: 64px;
+  background-size: auto;
+  background-repeat: no-repeat;
+  border-radius: 2px;
+}
+
+.avatar-head {
+  width: 48px;
+  height: 48px;
+}
+
+
+/* ==========================================================================
+   SECTION 15 — LEVEL & PROGRESS
+   ========================================================================== */
+
+/*
+  Usage:
+    <div class="progress-lvl">
+      <div class="progress-top">
+        <div class="level-cont">
+          <div class="level-value">42</div>
+          <span class="level-text">lvl</span>
+        </div>
+        <div class="exp-values">1250 / 5000</div>
+      </div>
+      <div class="progress-line">
+        <div class="progress" style="width: 25%;"></div>
+      </div>
+    </div>
+
+  Secondary variant:
+    <div class="progress-line">
+      <div class="progress is-secondary" style="width: 60%;"></div>
+    </div>
+*/
+
+.level-cont {
+  font-size: 24px;
+  color: var(--gold-1);
+  display: flex;
+  align-items: flex-end;
+}
+
+.level-text {
+  font-size: 24px;
+  margin-left: 4.8px;
+}
+
+.level-value {
+  border-radius: 4.8px;
+  background: var(--panel-3);
+  padding: 2.4px 8px;
+  min-width: 40px;
+  text-align: center;
+}
+
+.exp-values {
+  margin-right: 4.8px;
+  font-weight: 600;
+  font-size: 16px;
+  opacity: .8;
+}
+
+.progress-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 4.8px;
+}
+
+.progress-line {
+  background-color: var(--panel-1);
+  width: 100%;
+  height: 1.1rem;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  padding: 0 0.2rem;
+  box-shadow: 0 2px 0 rgba(50,52,71,.31);
+}
+
+.progress-line .progress {
+  background-color: var(--gold-1);
+  border-radius: 12px;
+  height: 0.8rem;
+  transition: width 1s linear;
+}
+
+.progress-line .progress.is-secondary {
+  background-color: var(--panel-4);
+}
+
+/* Level card (levels/rewards screen) */
+.level-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.level-head {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--gold-1);
+}
+
+
+/* ==========================================================================
+   SECTION 16 — CURRENCY DISPLAY
+   ========================================================================== */
+
+/*
+  Usage:
+    <div class="moneys">
+      <div class="card-cont money" style="--i: 3; font-size: 20px;">
+        <svg class="coin-icon svg-icon svg-icon--__coin__"></svg>
+        181095
+      </div>
+      <div class="card-cont money diamonds" style="--i: 2; font-size: 20px;">
+        <svg class="coin-icon svg-icon svg-icon--__diamond__"></svg>
+        269
+      </div>
+    </div>
+*/
+
+.moneys {
+  display: flex;
+  gap: 0.5rem;
+  pointer-events: auto;
+  margin-top: 0.3rem;
+}
+
+.money {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.money .coin-icon {
+  height: 24px;
+  width: 24px;
+}
+
+.money.diamonds {
+  color: var(--purple-1);
+}
+
+/* Inline currency icons */
+.icon-coin    { width: 20px; height: 20px; }
+.icon-diamond { width: 20px; height: 20px; color: var(--purple-2); }
+
+
+/* ==========================================================================
+   SECTION 17 — BADGES & RARITY TAGS
+   ========================================================================== */
+
+/*
+  Usage:
+    <!-- Verified / special badge on username -->
+    <img class="badge" src="verified.svg">
+
+    <!-- Rarity tag (quest sidebar left strip) -->
+    <div class="quest-rarity rare"></div>
+    <div class="quest-rarity epic"></div>
+    <div class="quest-rarity legendary"></div>
+
+    <!-- Ranked badge -->
+    <div class="ranked">RANKED</div>
+
+    <!-- Clan tag -->
+    <div class="clan-tag">BROS</div>
+
+    <!-- Online indicator -->
+    <div class="is-online"></div>
+*/
+
+.badge {
+  height: 1.2rem;
+  vertical-align: bottom;
+  display: inline-block;
+}
+
+/* Rarity sidebar strips (on quest/level cards) */
+.quest-rarity {
+  width: 6px;
+  height: 100%;
+  flex-shrink: 0;
+}
+
+.quest-rarity.common   { background: var(--rarity-common-bg); }
+.quest-rarity.rare     { background: linear-gradient(180deg, var(--rarity-rare-start)    1.99%, var(--rarity-rare-end)      94.56%); }
+.quest-rarity.epic     { background: linear-gradient(180deg, var(--rarity-epic-start)    2.68%, var(--rarity-epic-end)); }
+.quest-rarity.legendary{ background: linear-gradient(180deg, var(--rarity-legendary-s),  var(--rarity-legendary-e) 99.33%); }
+
+/* Rarity circle indicator */
+.rarity-circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.rarity-circle.common   { background: var(--rarity-common-bg); }
+.rarity-circle.rare     { background: var(--rarity-rare-end); }
+.rarity-circle.epic     { background: var(--rarity-epic-end); }
+.rarity-circle.legendary{ background: var(--rarity-legendary-e); }
+.rarity-circle.mythical { background: var(--rarity-mythical); }
+
+/* Ranked tag */
+.ranked,
+.ranked-tag {
+  background: var(--rarity-common-bg);
+  border-radius: 0.3rem;
+  padding: 0.5rem 1rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+}
+
+/* Clan tag (beside username) */
+.clan-tag {
+  color: var(--purple-1);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+/* Online dot */
+.is-online {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--green-1);
+  box-shadow: 0 0 4px var(--green-1);
+  display: inline-block;
+}
+
+/* Red notification circle */
+.circle-red {
+  background: #ff3838;
+  height: 14.4px;
+  width: 14.4px;
+  border-radius: 50%;
+  position: absolute;
+  right: -8px;
+  top: -4px;
+}
+
+/* NEW banner chip */
+.special-message-new {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 1rem;
+  padding: 0 0.3rem;
+  background-color: var(--red-1);
+  z-index: 10;
+  font-size: 0.55rem;
+  font-weight: 700;
+  font-family: var(--font-body);
+  border-radius: 1px;
+  box-shadow: 0 2px 4px rgba(0,0,0,.5);
+  display: flex;
+  align-items: center;
+  color: #fff;
+  text-shadow: none;
+}
+
+
+/* ==========================================================================
+   SECTION 18 — PLAYER ROW / LIST
+   ========================================================================== */
+
+/*
+  General player/friend/leaderboard row.
+
+  Usage:
+    <div class="player-cont">
+      <div class="player-left">
+        <div class="avatar avatar-head"></div>
+        <div class="player-name">
+          <div class="username">PlayerName</div>
+          <div class="level-cont"><div class="level-value">42</div></div>
+        </div>
+      </div>
+      <div class="player-right">
+        <div class="player-value">1234</div>
+      </div>
+    </div>
+*/
+
+.player-cont {
+  display: flex;
+  background: rgba(47, 57, 87, .65);
+  margin-top: 0.7rem;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.5rem 0.7rem 0.5rem 1rem;
+  position: relative;
+  background-color: var(--panel-4);
+  border-radius: 0.7rem;
+  font-weight: 700;
+  height: 2.5rem;
+  margin-bottom: 0.6rem;
+}
+
+.player-cont.dead { opacity: 0.3; }
+
+.player-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.player-left,
+.player-right {
+  display: flex;
+  align-items: center;
+}
+
+.player-left {
+  font-size: 1.3rem;
+  font-weight: 600;
+  gap: 0.5rem;
+}
+
+.player-name {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-left: 1rem;
+}
+
+.player-value {
+  width: 4.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* Friends list specific */
+.friend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.friend-desc {
+  font-size: var(--text-sm);
+  opacity: 0.7;
+}
+
+.friend-id {
+  font-size: var(--text-xs);
+  opacity: 0.5;
+}
+
+/* Head display (team lobby) */
+.heads {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.head-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.nickname {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.short-id {
+  font-size: 1.1rem;
+  margin-left: 0.2rem;
+  opacity: 0.5;
+  font-weight: 500;
+}
+
+
+/* ==========================================================================
+   SECTION 19 — QUESTS / SUBJECTS PANEL
+   ========================================================================== */
+
+/*
+  Usage:
+    <div class="quests">
+      <div class="expire">
+        <svg class="icon svg-icon svg-icon--__clock-full__"></svg>
+        Expires in 19:20:02
+      </div>
+      <div class="tabs-wrapper">
+        <div class="tabs">
+          <div class="tab daily selected">DAILY QUESTS</div>
+          <div class="tab event">EVENT QUESTS</div>
+        </div>
+      </div>
+      <div class="subjects">
+        <div class="subject rare">
+          <div class="quest">
+            <div class="left quest-rarity rare"></div>
+            <div class="right">
+              <div class="description">Get 100 kills</div>
+              <div class="progress-line"><div class="progress" style="width: 45%;"></div></div>
+              <div class="progress"><div class="progress2">45/100</div></div>
+              <div class="rewards">
+                <div class="label">Rewards:</div>
+                <div class="list">
+                  <div class="reward xp"><a class="amount">500 xp</a></div>
+                  <div class="reward coins"><a class="amount">1000</a></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+*/
+
+.quests {
+  color: var(--white);
+  overflow-y: hidden;
+  padding: 4px;
+  width: 379px;
+  border-radius: var(--radius-xs);
+  background: #7289da;
+  border: 4px solid #7791ed;
+  border-bottom: 4px solid #5b6dad;
+  border-top: 4px solid #849df5;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  pointer-events: auto;
+}
+
+.expire {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.9rem;
+  opacity: 0.8;
+  margin-bottom: 0.3rem;
+}
+
+.expire .icon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.subjects {
+  display: flex;
+  justify-content: flex-start;
+  align-content: flex-start;
+  flex-wrap: wrap;
+  overflow-y: auto;
+}
+
+.subject {
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 2px;
+}
+
+.quest {
+  display: flex;
+  position: relative;
+  background-color: var(--panel-2);
+  opacity: 0.5;
+}
+
+.quest.completed,
+.subject:hover .quest {
+  opacity: 1;
+}
+
+.quest .left {
+  width: 6px;
+  flex-shrink: 0;
+}
+
+.quest .right {
+  padding: 0.4rem 0.6rem;
+  flex: 1;
+}
+
+.quest .description {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+
+.quest .progress2 {
+  font-weight: 700;
+  font-size: 14px;
+  text-align: right;
+  margin: 4px 0;
+}
+
+.quest .rewards {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-top: 0.4rem;
+}
+
+.quest .rewards .label {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  font-weight: 400;
+}
+
+.reward {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.reward.xp     { color: var(--green-4); }
+.reward.coins  { color: var(--gold-1); }
+.reward.diamonds { color: var(--purple-2); }
+
+
+/* ==========================================================================
+   SECTION 20 — STORE / ITEM CARDS
+   ========================================================================== */
+
+/*
+  Store skin card:
+    <div class="subject">
+      <div class="bg-img"></div>
+      <img class="skin-img" src="weapon.png">
+      <div class="rarity-label">LEGENDARY</div>
+      <div class="rarity-circle legendary"></div>
+      <div class="hover">
+        <button class="button btn-sm buy-btn">BUY</button>
+        <button class="button btn-sm inspect-btn rectangle">INSPECT</button>
+      </div>
+    </div>
+
+  Bundle card:
+    <div class="bundle-card">
+      <div class="bundle-card-cont">
+        <img class="skin-img" src="bundle.png">
+        <div class="bundle-label">BUNDLE NAME</div>
+        <div class="weapon-price">
+          <span class="weapon-price-value">2500</span>
+          <svg class="icon-coin svg-icon svg-icon--__coin__"></svg>
+        </div>
+      </div>
+    </div>
+*/
+
+.subject.store-item {
+  background: radial-gradient(39.78% 145.24% at 54.34% 55.56%, #202639 0, #13192d 100%);
+  border: 0.3rem solid #080c1b;
+  width: 100%;
+  height: 8rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+}
+
+.subject.store-item:hover .hover-buy,
+.subject.store-item:hover .inspect-btn {
+  display: flex;
+}
+
+.skin-img {
+  max-width: 8rem;
+  z-index: 2;
+  position: relative;
+  filter: drop-shadow(0 0.2rem 0.2rem rgba(0,0,0,.35));
+}
+
+.rarity-label {
+  position: absolute;
+  font-weight: 700;
+  font-size: 0.813rem;
+  text-align: left;
+  margin-left: 0.7rem;
+  width: 100%;
+  bottom: 0.4rem;
+  left: 0;
+}
+
+.rarity-bg {
+  max-width: 100%;
+  position: absolute;
+  left: 0;
+  z-index: 0;
+}
+
+.hover-buy {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,.5);
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  z-index: 5;
+  border-radius: 0.5rem;
+}
+
+.weapon-price {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-weight: 700;
+}
+
+.weapon-price-value { color: var(--gold-1); }
+.weapon-diamond     { color: var(--purple-2); }
+
+/* Strikethrough price */
+.strikethrough {
+  text-decoration: line-through;
+  opacity: 0.5;
+  font-size: 0.85em;
+}
+
+/* Slider / carousel */
+.slider-container {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.slider-wrapper {
+  display: flex;
+  transition: transform 0.3s ease;
+}
+
+.slider-item {
+  flex-shrink: 0;
+}
+
+.slider-active { opacity: 1; }
+
+
+/* ==========================================================================
+   SECTION 21 — SERVERS / GAME LOBBY LIST
+   ========================================================================== */
+
+/*
+  Usage:
+    <div class="container-games">
+      <div class="available-rooms">
+        <div class="tab-info">
+          <div class="player-cont">
+            <div class="player-left">...</div>
+            <button class="button btn-sm rectangle enter">JOIN</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  Server row info fields:
+    .bold   — game mode name
+    .info-key-cont — ping / region info
+*/
+
+.container-games {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.available-rooms {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.tab-info {
+  z-index: 5;
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  max-width: 38.75rem;
+  background: rgba(47,57,87,.7);
+  box-shadow: var(--shadow-md);
+  border-radius: var(--radius-2xl);
+  color: var(--white);
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+}
+
+.info-key-cont {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: var(--text-sm);
+  opacity: 0.7;
+}
+
+.bold { font-weight: 700; }
+
+.enter {
+  background-color: var(--blue-4);
+  --hover-color: var(--blue-5);
+}
+
+.bot {
+  opacity: 0.5;
+  font-style: italic;
+}
+
+/* Chat in the servers window */
+.chat-cont {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.chat-head {
+  background: var(--panel-2);
+  padding: 0.5rem 0.8rem;
+  font-weight: 700;
+}
+
+.chat-label {
+  font-size: var(--text-sm);
+  opacity: 0.7;
+  margin-bottom: 0.2rem;
+}
+
+
+/* ==========================================================================
+   SECTION 22 — INVENTORY / ITEM GRID
+   ========================================================================== */
+
+/*
+  Usage:
+    <div class="inventory">
+      <div class="filters">
+        <div class="filter-name input-wrapper">
+          <input class="input" placeholder="Search...">
+        </div>
+        <div class="filter-rarity">
+          <div class="tab active">ALL</div>
+          <div class="tab">COMMON</div>
+          <div class="tab">RARE</div>
+        </div>
+      </div>
+      <div class="subjects">
+        <div class="subject">
+          <div class="gun">
+            <img class="gun-img" src="gun.png">
+          </div>
+          <div class="item-name">VITA</div>
+          <div class="count">x2</div>
+          <div class="hover-btns-group">
+            <button class="button btn-sm inspect-btn rectangle">INSPECT</button>
+          </div>
+        </div>
+      </div>
+    </div>
+*/
+
+.inventory {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.filters {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.filter-rarity {
+  display: flex;
+  gap: 0.2rem;
+}
+
+.gun {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gun-img {
+  max-width: 100%;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,.5));
+}
+
+.item-name {
+  font-size: var(--text-base);
+  font-weight: 700;
+  text-align: center;
+}
+
+.count {
+  font-size: var(--text-sm);
+  color: var(--gray-2);
+  font-weight: 600;
+}
+
+.hover-btns-group {
+  display: none;
+  position: absolute;
+  bottom: 0.3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  gap: 0.3rem;
+}
+
+.subject:hover .hover-btns-group {
+  display: flex;
+}
+
+/* Item wrapper in inventory */
+.item-wrapper {
+  height: 4rem;
+  width: 4rem;
+  background: #353535;
+  border: 3px solid rgba(237,237,237,.103);
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  font-family: var(--font-body);
+}
+
+
+/* ==========================================================================
+   SECTION 23 — OPTIONS / SETTINGS PANELS
+   ========================================================================== */
+
+/*
+  Usage (settings window):
+    <div class="main">
+      <div class="general-content">
+        <div class="header">SECTION HEADER</div>
+        <div class="element">
+          <div class="label">Volume</div>
+          <div class="right">
+            <div class="value">75</div>
+            <input type="range" class="range" min="0" max="100" value="75">
+          </div>
+        </div>
+        <div class="element">
+          <div class="label">Enable Feature</div>
+          <label class="custom-checkbox">
+            <input type="checkbox">
+            <span></span>
+          </label>
+        </div>
+        <div class="element">
+          <div class="label">Jump</div>
+          <div class="keybind-right">
+            <input class="keybind-input" value="SPACE">
+            <button class="keybind-reset">RESET</button>
+          </div>
+        </div>
+      </div>
+    </div>
+*/
+
+.main {
+  position: absolute;
+  padding: 0 0 1rem 1rem;
+  font-family: var(--font-body);
+  height: 100%;
+  pointer-events: auto;
+  z-index: var(--z-hud);
+  width: 100%;
+  background: rgba(47,57,87,.5);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.general-content {
+  width: 50%;
+  height: 100%;
+  position: relative;
+  padding: 1rem 5rem 0 1rem;
+  overflow-y: scroll;
+  margin: 0 auto;
+  margin-top: 8rem;
+  margin-bottom: 8rem;
+}
+
+.settings-holder {
+  padding: 0.5rem;
+}
+
+.element {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.element .right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.8rem;
+}
+
+.element .value {
+  font-size: 1.8rem;
+  margin-right: 0.5rem;
+  color: var(--gold-1);
+  font-weight: 700;
+  min-width: 3rem;
+  text-align: right;
+}
+
+/* Settings section header */
+.settings-header,
+.header.settings-header {
+  text-transform: uppercase;
+  color: var(--gold-1);
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: left;
+  margin-top: 2.5rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255,255,255,.1);
+  padding-bottom: 0.3rem;
+}
+
+.keybind-element {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+.keybind-field {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.keybind-reset {
+  font-size: 0.8rem;
+  background: rgba(255,255,255,.1);
+  border: none;
+  color: var(--white);
+  padding: 0.3rem 0.6rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+
+.keybind-reset:hover {
+  background: rgba(255,255,255,.2);
+}
+
+/* Crosshair preview box */
+.crosshair-preview-container {
+  position: relative;
+  background: #000;
+  border: 2px solid var(--panel-4);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.crosshair-preview {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Create custom game modal */
+.create-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.maps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.map {
+  position: relative;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 3px solid transparent;
+  transition: var(--transition-base);
+}
+
+.map:hover,
+.map.active {
+  border-color: var(--gold-1);
+}
+
+.mods {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.mod {
+  background: var(--panel-4);
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 600;
+  transition: var(--transition-base);
+  border: 2px solid transparent;
+}
+
+.mod:hover,
+.mod.active {
+  border-color: var(--gold-1);
+  background: var(--panel-2);
+}
+
+
+/* ==========================================================================
+   SECTION 24 — SOCIAL BUTTONS (DISCORD / CLIENT)
+   ========================================================================== */
+
+/*
+  Usage:
+    <div class="card-cont soc-group discord">
+      <svg class="soc-icon svg-icon svg-icon--__discord__"></svg>
+    </div>
+    <div class="card-cont soc-group client">
+      <div class="text-soc">
+        <div class="discord-name">CLIENT</div>
+        <div>DOWNLOAD</div>
+      </div>
+      <svg class="soc-icon svg-icon svg-icon--__gamepad__"></svg>
+    </div>
+*/
+
+.soc-group {
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: var(--transition-base);
+}
+
+.soc-group.discord {
+  background: var(--discord-bg) !important;
+  border-top-color: var(--discord-border-t) !important;
+  border-bottom-color: var(--discord-border-b) !important;
+  border-bottom-left-radius: 4px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.soc-group.discord:hover {
+  background: var(--discord-hover) !important;
+}
+
+.soc-group.client {
+  background: var(--client-bg) !important;
+  border-top-color: #6a78a1 !important;
+  border-bottom-color: #383f56 !important;
+  margin-left: 9.6px;
+}
+
+.soc-group.client:hover {
+  background: var(--client-hover) !important;
+}
+
+.soc-group.orange {
+  background: #e15f30 !important;
+  border-top-color: #f49775 !important;
+  border-bottom-color: #ad4e2b !important;
+}
+
+.soc-group.orange:hover {
+  background: #f27345 !important;
+}
+
+.soc-icon {
+  height: 48px;
+  width: 48px;
+  margin: 3.2px 1.6px 0 1.6px;
+  transition: transform 0.3s ease;
+}
+
+.soc-icon:active {
+  transform: scale(0.9);
+}
+
+.text-soc {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-right: 12.8px;
+  text-shadow: 0 1px 0 rgba(0,0,0,.7);
+  margin-left: 9.6px;
+}
+
+.discord-name {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.settings-and-socicons {
+  display: flex;
+  align-items: flex-start;
+  pointer-events: auto;
+}
+
+.settings {
+  cursor: pointer;
+  transition: var(--transition-base);
+}
+
+.settings-icon {
+  width: 48px;
+  height: 48px;
+}
+
+
+/* ==========================================================================
+   SECTION 25 — TEAM / PARTY SECTION
+   ========================================================================== */
+
+/*
+  Usage:
+    <div class="team-section">
+      <div class="invite">
+        <div class="text-invite">INVITE <svg class="invite-icon"></svg></div>
+      </div>
+      <div class="player-cont">
+        <div class="heads">
+          <div class="levels">42 <div class="klo">lvl</div></div>
+          <div class="head-right">
+            <div class="clan-tag">CLAN</div>
+            <div class="nickname">PlayerName</div>
+          </div>
+        </div>
+        <canvas id="players-lobby" class="players-lobby"></canvas>
+      </div>
+    </div>
+*/
+
+.team-section {
+  margin-top: 3rem;
+  pointer-events: auto;
+  position: relative;
+}
+
+.invite {
+  display: flex;
+  align-items: center;
+}
+
+.text-invite {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 1rem;
+}
+
+.invite-icon {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.invite-btn {
+  font-size: 60px !important;
+  width: 135px;
+  height: 270px;
+  line-height: 233px;
+  padding: 0;
+  font-weight: 500;
+  background: rgba(255,255,255,.051);
+  border-radius: 0.188rem;
+  border: 4px solid rgba(255,255,255,.059);
+  color: rgba(255,255,255,.949);
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-base);
+}
+
+.invite-btn:hover {
+  background-color: #3458b1;
+}
+
+.invite-btn-tip {
+  position: absolute;
+  width: 100%;
+  top: 55%;
+  left: 0;
+  font-size: 16px;
+  line-height: 25px;
+  text-transform: uppercase;
+  font-weight: 700 !important;
+  letter-spacing: 2px;
+  font-family: var(--font-body);
+  font-style: italic;
+  text-align: center;
+}
+
+.players-lobby {
+  height: 480px;
+  width: 960px;
+  display: block;
+}
+
+.levels {
+  font-size: 1.5rem;
+  font-weight: 700;
+  display: flex;
+  align-items: flex-end;
+}
+
+.klo {
+  font-size: 0.8rem;
+  margin-left: 2px;
+  opacity: 0.7;
+}
+
+
+/* ==========================================================================
+   SECTION 26 — PLAY AREA (BOTTOM RIGHT)
+   ========================================================================== */
+
+/*
+  Usage:
+    <div class="play">
+      <div class="play-content">
+        <div class="select-region">
+          <img src="flag.png" width="24"> NA
+        </div>
+        <div class="play-content-up">
+          <button class="button create-btn rectangle">CREATE</button>
+          <button class="button join-btn rectangle">JOIN</button>
+        </div>
+        <div class="select-mod">
+          <svg class="arrow-bottom"></svg>
+          <span>QUICKPLAY SETTINGS</span>
+        </div>
+        <button class="button play-btn shiny btn-xl">PLAY</button>
+      </div>
+    </div>
+*/
+
+.play {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 20px;
+  display: flex;
+  align-items: flex-end;
+  z-index: 4;
+  transform-origin: right bottom;
+  pointer-events: auto;
+}
+
+.play-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  font-size: 21px;
+  font-weight: 600;
+}
+
+.play-content-up {
+  width: 100%;
+  margin-right: -5px;
+}
+
+.select-region {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 0.5rem;
+}
+
+.select-mod {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-bottom: 0.3rem;
+}
+
+.create-btn,
+.join-btn {
+  float: right;
+  width: 188px;
+  font-size: 18px !important;
+}
+
+.play-btn {
+  font-size: 52px !important;
+  margin-top: 5px;
+  margin-left: 10px;
+  margin-right: 7px;
+  width: 384px;
+  box-shadow: 0 5.47651px 0 rgba(0,0,0,.5) !important;
+  font-weight: 600;
+  font-style: italic;
+}
+
+.daily-rewards-btn {
+  width: 250px;
+  height: 60px;
+  font-size: 16px !important;
+}
+
+
+/* ==========================================================================
+   SECTION 27 — NOTIFICATION / ANNOUNCEMENT BANNER
+   ========================================================================== */
+
+/*
+  Usage:
+    <div class="special-message-home card-cont">
+      <div class="special-message-new">NEW</div>
+      <div class="special-message-content">
+        <div class="special-message-title">Weapons Changes (REFRESH)</div>
+        <div class="special-message-home-text">See more...</div>
+      </div>
+    </div>
+*/
+
+.special-message-home {
+  position: relative;
+  pointer-events: auto;
+  cursor: pointer;
+  margin: 0.4rem 0;
+}
+
+.special-message-content {
+  padding: 0.4rem 0.6rem;
+}
+
+.special-message-title {
+  color: #f5a623;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: var(--font-body);
+  margin-bottom: 4px;
+  text-align: left;
+}
+
+.special-message-home-text {
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+  font-family: var(--font-body);
+  text-align: left;
+}
+
+/* Vue notification toast */
+.vue-notification-group {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: calc(var(--z-modal) + 10);
+}
+
+
+/* ==========================================================================
+   SECTION 28 — CHAT COMPONENT
+   ========================================================================== */
+
+/*
+  Usage:
+    <div class="chat">
+      <div class="chat-messages">
+        <div class="chat-msg">
+          <span class="author-name">Player:</span>
+          <span class="chat-text">hello</span>
+        </div>
+      </div>
+      <div class="input-container">
+        <button class="quick-slash">/</button>
+        <input class="input" placeholder="Chat...">
+      </div>
+    </div>
+*/
+
+.chat {
+  transform-origin: bottom left;
+  width: 27.3em;
+  position: absolute;
+  padding: 0 0 1em 1em;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-family: var(--font-body);
+  height: 100%;
+  pointer-events: auto;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  position: relative;
+}
+
+.quick-slash {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.65em;
+  padding: 0.55em 0.75em;
+  border: none;
+  border-radius: 3px;
+  background: rgba(55,71,124,.9);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 1.1em;
+  cursor: pointer;
+}
+
+/* Chat autocomplete helper */
+.chat-helper {
+  position: absolute;
+  bottom: calc(100% + 0.4em);
+  left: 0;
+  width: 100%;
+  background: rgba(37,47,82,.92);
+  border-radius: 4px;
+  box-shadow: 0 6px 18px rgba(0,0,0,.4);
+  padding: 0.25em 0;
+  z-index: 30;
+  max-height: 12em;
+  overflow-y: auto;
+  backdrop-filter: blur(3px);
+}
+
+.chat-helper__item {
+  display: flex;
+  align-items: center;
+  padding: 0.35em 0.65em;
+  font-size: 0.95em;
+  cursor: pointer;
+  color: var(--white);
+}
+
+.chat-helper__item.active {
+  background: rgba(74,97,158,.75);
+}
+
+.chat-helper__command {
+  font-weight: 700;
+  color: var(--gold-1);
+  margin-right: 0.5em;
+}
+
+.chat-helper__command--mode {
+  color: var(--green-1);
+}
+
+.chat-helper__description {
+  color: rgba(255,255,255,.6);
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.author-name {
+  font-weight: 700;
+  margin-right: 0.3em;
+}
+
+
+/* ==========================================================================
+   SECTION 29 — HUD: IN-GAME ELEMENTS
+   ========================================================================== */
+
+/* Root HUD wrapper — fixed, full-screen, no pointer events */
+.game-interface {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  z-index: 2;
+  font-family: var(--font-body);
+  pointer-events: none;
+}
+
+.desktop-game-interface {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  z-index: 4;
+  font-family: var(--font-body);
+  pointer-events: none;
+}
+
+/* -------- CROSSHAIR -------- */
+/*
+  CSS-only crosshair. Customize via custom properties:
+    --crosshair-color: #0f0
+    --crosshair-outline: 1px
+    --crosshair-outline-color: #000
+    --crosshair-gap: 3px
+    --crosshair-arm-offset: 0px
+    --crosshair-gap-adjust: 2px
+    --crosshair-dot-offset: 0px
+
+  Usage:
+    <div class="crosshair-cont">
+      <div class="crosshair-static">
+        <div class="crosshair-arm crosshair-top"></div>
+        <div class="crosshair-arm crosshair-bottom"></div>
+        <div class="crosshair-arm crosshair-left"></div>
+        <div class="crosshair-arm crosshair-right"></div>
+        <div class="crosshair-dot"></div>
+      </div>
+    </div>
+*/
+
+.crosshair-cont {
+  position: absolute;
+  z-index: 1;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.crosshair-static {
+  position: absolute;
+}
+
+.crosshair-arm {
+  position: absolute;
+  background-color: var(--crosshair-color, #0f0);
+  box-shadow: 0 0 0 var(--crosshair-outline, 1px) var(--crosshair-outline-color, #000);
+}
+
+.crosshair-top {
+  left: calc(50% - var(--crosshair-arm-offset, 0px));
+  bottom: calc(50% + var(--crosshair-gap, 3px) - var(--crosshair-gap-adjust, 2px) + 2px);
+}
+
+.crosshair-bottom {
+  left: calc(50% - var(--crosshair-arm-offset, 0px));
+  top: calc(50% + var(--crosshair-gap, 3px) + 2px);
+}
+
+.crosshair-left {
+  right: calc(50% + var(--crosshair-gap, 3px) - var(--crosshair-gap-adjust, 2px) + 2px);
+  top: calc(50% - var(--crosshair-arm-offset, 0px));
+}
+
+.crosshair-right {
+  left: calc(50% + var(--crosshair-gap, 3px) + 2px);
+  top: calc(50% - var(--crosshair-arm-offset, 0px));
+}
+
+.crosshair-dot {
+  position: absolute;
+  left: calc(50% - var(--crosshair-dot-offset, 0px));
+  top: calc(50% - var(--crosshair-dot-offset, 0px));
+  background-color: var(--crosshair-color, #0f0);
+  box-shadow: 0 0 0 var(--crosshair-outline, 1px) var(--crosshair-outline-color, #000);
+}
+
+/* Dynamic crosshair (spreads on movement) */
+.crosshair-dynamic {
+  position: absolute;
+  display: none;
+  pointer-events: none;
+  top: -0.5px;
+  left: -0.5px;
+  width: 100%;
+  height: 100%;
+}
+
+/* Sniper scope */
+.sniper-scope-cont {
+  position: absolute;
+  z-index: 1;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.sniper-scope {
+  box-shadow: 0 0 0 10000vmax #000;
+  width: 60rem;
+  height: 60rem;
+  border-radius: 50%;
+}
+
+@media (max-height: 650px) {
+  .sniper-scope { width: 50rem; height: 50rem; }
+}
+
+/* Hit marker flash */
+.hitmark {
+  height: 3rem;
+  width: 3rem;
+  position: absolute;
+  animation: hitmark-pop 0.08s linear forwards;
+}
+
+@keyframes hitmark-pop {
+  0%   { transform: scale(0.9); }
+  100% { transform: scale(0.8); }
+}
+
+/* -------- KILL BAR (top-right kill feed) -------- */
+/*
+  Usage:
+    <div class="kill-bar-cont">
+      <div class="kill-bar-item">
+        <img class="skull">
+        <span class="killer-name">PlayerA</span>
+        <div class="weapon-cont"><img class="weapon-img"></div>
+        <span class="victim-name">PlayerB</span>
+      </div>
+    </div>
+*/
+
+.kill-bar-cont {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  color: var(--white);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  align-content: flex-end;
+  justify-content: flex-end;
+  pointer-events: none;
+}
+
+.kill-bar-item {
+  margin-top: 0.7rem;
+  background: rgba(55,71,124,.6);
+  border-radius: 5px;
+  padding: 0.3rem 0.7rem;
+  display: flex;
+  align-items: center;
+}
+
+.killer-name { margin-right: 0.5rem; }
+
+.skull {
+  width: 1.3rem;
+  height: 1.3rem;
+  margin-right: 0.2rem;
+  margin-top: 0.1rem;
+}
+
+/* -------- MINIMAP -------- */
+/*
+  Usage:
+    <div class="minimap-state">
+      <div class="minimap-container">
+        <div class="minimap">
+          <div class="player-dot teammate" style="left: 50%; top: 50%;"></div>
+          <div class="player-dot enemy" style="left: 70%; top: 30%;"></div>
+          <div class="local-player-indicator"></div>
+        </div>
+      </div>
+    </div>
+*/
+
+.minimap-state {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.minimap-container {
+  background: rgba(0,0,0,.5);
+  border: 2px solid rgba(255,255,255,.3);
+  border-radius: 4px;
+}
+
+.minimap {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+}
+
+.player-dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 3px rgba(0,0,0,.5);
+}
+
+.player-dot.teammate { background-color: #0f0; }
+.player-dot.enemy    { background-color: red; }
+
+.local-player-indicator {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 12px solid #fff;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 0 2px rgba(0,0,0,.7));
+  z-index: 1;
+}
+
+/* -------- KILL/DEATH COUNTER -------- */
+/*
+  Usage:
+    <div class="state-cont">
+      <div class="kill-death">
+        <div class="bg">
+          <span class="kd">K: 12</span>
+        </div>
+        <div class="bg">
+          <svg class="icon icon-death"></svg>
+          <span class="kd">D: 3</span>
+        </div>
+      </div>
+    </div>
+*/
+
+.state-cont {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: var(--white);
+  letter-spacing: 0.065em;
+  pointer-events: none;
+}
+
+.kill-death {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.kill-death .bg {
+  background: rgba(59,73,117,.7);
+  border-radius: 3px;
+  box-shadow: var(--shadow-sm);
+  padding: 0.4rem 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 5rem;
+  text-align: center;
+}
+
+.icon-death {
+  color: var(--red-1);
+  width: 1rem;
+  height: 1rem;
+  margin-left: 0.5rem;
+}
+
+.kd {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* -------- TEAM SCORE -------- */
+.team-score {
+  position: absolute;
+  top: 0;
+  display: flex;
+}
+
+.team-score .label {
+  height: 4rem;
+  width: 8rem;
+  font-size: 3rem;
+  margin-top: 1rem;
+  border-radius: 0.25rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.team-score .red  { background-color: #ff4d42; margin-right: 2rem; }
+.team-score .blue { background-color: #0d6dc6; margin-left: -1rem; }
+
+/* -------- HUD PANELS (zombie / objective) -------- */
+.zombie-state {
+  position: absolute;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  font-family: var(--font-body);
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.hud-panel {
+  background: rgba(59,73,117,.7);
+  border-radius: 0.25rem;
+  box-shadow: var(--shadow-sm);
+  padding: 0.5rem 1rem;
+  min-width: 6.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  text-align: center;
+}
+
+.hud-panel .panel-label {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.hud-panel .panel-value {
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--white);
+}
+
+.hud-panel .panel-sub {
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  opacity: 0.6;
+}
+
+.hud-panel.cash .panel-value { color: var(--gold-1); }
+
+/* -------- RESPAWN / DEATH SCREEN -------- */
+/*
+  Usage:
+    <div class="death-cont">
+      <div class="user-card">
+        <div class="top">
+          <div class="top-left">
+            <div class="killer-level">12</div>
+            <div class="nickname">
+              <div class="clan-tag">CLAN</div>
+              KillerName
+              <img class="badge" src="verified.svg">
+            </div>
+          </div>
+        </div>
+        <div class="bottom">
+          <span class="label-killed">KILLED BY</span>
+          <span class="name-gun">VITA</span>
+          <span class="damage-value">134 dmg</span>
+        </div>
+        <div class="respawn-in">RESPAWN IN 3s</div>
+        <button class="button respawn-btn">RESPAWN</button>
+      </div>
+    </div>
+*/
+
+.death-cont {
+  pointer-events: all;
+  top: 0;
+  left: 0;
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  z-index: 2;
+  background: rgba(0,0,0,.726);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  animation: death-fadein 0.5s ease-out forwards;
+}
+
+@keyframes death-fadein {
+  0%   { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.user-card {
+  background: linear-gradient(93.94deg, rgba(26,31,46,.65) -6.86%, rgba(33,55,116,.65) 104.84%);
+  border: 3px solid var(--black-5);
+  padding-top: 25px;
+  padding-bottom: 25px;
+  border-radius: 4px;
+  box-shadow: 0 0 59px rgba(0,0,0,.45);
+  display: flex;
+  flex-direction: column;
+  width: 600px;
+  position: relative;
+}
+
+.killer-level {
+  font-size: 48px;
+  background: var(--black-5);
+  border-radius: 3px;
+  color: var(--gold-1);
+  font-weight: 700;
+  padding: 3.2px 8px;
+  min-width: 72px;
+  text-align: center;
+}
+
+.killer-clan {
+  color: #a614ff;
+  font-weight: 600;
+  font-size: 20px;
+  margin-left: 5.4px;
+  text-align: left;
+}
+
+.label-killed {
+  color: var(--red-1);
+  margin-right: 5.4px;
+  font-weight: 600;
+}
+
+.name-gun,
+.damage-value {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.damage-value { margin-left: 6.4px; }
+
+.respawn-in {
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 19px;
+  color: #c5c5c5;
+  display: block;
+  font-weight: 600;
+  height: 35px;
+  line-height: 35px;
+  background: rgba(255,255,255,.02);
+  text-align: center;
+}
+
+.respawn-btn {
+  margin: 16px auto 0;
+  height: 50px;
+  width: 499.5px;
+}
+
+.respawn-btn:active { transform: scale(1.025); }
+
+.respawn-btn--disabled {
+  opacity: 0.5;
+  filter: grayscale(0.4);
+}
+
+.respawn-btn--pressed {
+  animation: respawn-shake 0.1s ease infinite;
+}
+
+@keyframes respawn-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(6px); }
+}
+
+/* Timer display */
+.timer {
+  font-size: 2.25rem;
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+}
+
+/* Warmup timer */
+.warmup-timer {
+  font-size: 2rem;
+  margin-top: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-radius: 0.25rem;
+  padding: 1rem;
+}
+
+/* Score container (end-game) */
+.score-cont {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}
+
+
+/* ==========================================================================
+   SECTION 30 — PROFILE WINDOW
+   ========================================================================== */
+
+/*
+  Usage:
+    <div class="card-profile">
+      <div class="avatar" style="width: 128px; height: 128px;"></div>
+      <div class="info-icon">
+        <div class="name-page">PlayerName</div>
+        <div class="bio">Gamer since 2020</div>
+        <div class="level-cont"><div class="level-value">42</div><span class="level-text">lvl</span></div>
+      </div>
+      <div class="k-d">
+        <div>K/D: 2.4</div>
+        <div>Wins: 103</div>
+      </div>
+    </div>
+*/
+
+.card-profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem;
+  gap: 0.8rem;
+}
+
+.bio {
+  font-size: var(--text-base);
+  opacity: 0.7;
+  max-width: 20rem;
+  text-align: center;
+}
+
+.k-d {
+  display: flex;
+  gap: 1rem;
+  font-weight: 700;
+  font-size: var(--text-lg);
+}
+
+.copy-cont {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: var(--text-sm);
+  cursor: pointer;
+  opacity: 0.7;
+  transition: var(--transition-base);
+}
+
+.copy-cont:hover { opacity: 1; }
+
+.inline-copy {
+  font-size: var(--text-xs);
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.inline-copy:hover { opacity: 1; }
+
+
+/* ==========================================================================
+   SECTION 31 — HUB / LEADERBOARD
+   ========================================================================== */
+
+/*
+  Usage:
+    <div class="hub-container">
+      <div class="head-leaders">LEADERBOARD</div>
+      <div class="background-leaders">
+        <div class="player-cont champion">
+          <div class="player-left">
+            <span class="cont-name">1.</span>
+            <div class="avatar avatar-head"></div>
+            <div class="player-name">
+              <div class="username">ChampionName</div>
+            </div>
+          </div>
+          <div class="player-right">
+            <div class="player-value">9999</div>
+          </div>
+        </div>
+      </div>
+    </div>
+*/
+
+.hub-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+.head-leaders {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.5rem 1rem;
+  color: var(--gold-1);
+}
+
+.background-leaders {
+  overflow-y: auto;
+  flex: 1;
+  padding: 0.5rem;
+}
+
+.champion {
+  background: linear-gradient(to right, rgba(255,185,20,.2), rgba(255,185,20,.05));
+  border-left: 3px solid var(--gold-1);
+}
+
+.cont-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  min-width: 2rem;
+  text-align: center;
+}
+
+.awards-imgs {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.award-img {
+  height: 2rem;
+  width: auto;
+}
+
+.awards-label { font-size: var(--text-sm); opacity: 0.7; }
+.awards-span  { font-weight: 700; color: var(--gold-1); }
+
+.bg-light {
+  background: rgba(255,255,255,.05);
+  border-radius: var(--radius-sm);
+}
+
+
+/* ==========================================================================
+   SECTION 32 — NEWS / TERMS / STATIC CONTENT
+   ========================================================================== */
+
+.news-content,
+.terms-content {
+  padding: 1.5rem;
+  max-width: 60rem;
+  line-height: 1.6;
+  color: var(--gray-1);
+}
+
+.news-content h2,
+.terms-content h2 {
+  color: var(--gold-1);
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  margin-top: 1.5rem;
+}
+
+.news-content p,
+.terms-content p {
+  margin-bottom: 1rem;
+  opacity: 0.85;
+}
+
+
+/* ==========================================================================
+   SECTION 33 — OVERLAY STATES
+   ========================================================================== */
+
+/* Full-screen dimmed overlay (loading, sign-in required) */
+.view {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,.45);
+}
+
+/* "Coming soon" placeholder overlay */
+.coming-soon {
+  position: absolute;
+  background-color: rgba(59,73,117,.6);
+  font-size: 3rem;
+  z-index: 10;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  color: var(--white);
+}
+
+/* Sign-in required overlay */
+.sign-in {
+  z-index: 10;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  color: var(--white);
+  min-width: 64rem;
+  min-height: 32.5rem;
+  font-size: 2rem;
+  flex-direction: column;
+  padding-bottom: 2rem;
+}
+
+/* Auth form panel (login) */
+.auth-form {
+  font-size: 40px;
+  margin-left: -8px;
+  border-radius: 0 0 15px 15px;
+  z-index: 10;
+  width: 300px;
+  height: 114px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Close button (top-right of any overlay) */
+.close {
+  height: 4rem;
+  width: 4rem;
+  background: var(--red-1);
+  position: absolute;
+  right: 0;
+  z-index: 3;
+  border-radius: 0 0 0 7px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-base);
+}
+
+.close:hover { background-color: var(--red-4); }
+
+.icon-close {
+  height: 2rem;
+  width: 2rem;
+}
+
+
+/* ==========================================================================
+   SECTION 34 — ANIMATION UTILITIES
+   ========================================================================== */
+
+/* Rotate continuously */
+.animate-rotate {
+  animation: anim-rotate 10s linear infinite;
+}
+
+@keyframes anim-rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Fade in from below */
+.animate-fadein {
+  animation: anim-fadein 0.5s ease-out forwards;
+}
+
+@keyframes anim-fadein {
+  0%   { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Scale up from center */
+.animate-scale-up {
+  animation: anim-scale-up 0.3s ease-out forwards;
+}
+
+@keyframes anim-scale-up {
+  0%   { transform: scale(0.85); opacity: 0.7; }
+  100% { transform: scale(1);    opacity: 1; }
+}
+
+/* Pulse opacity */
+.animate-pulse {
+  animation: anim-pulse 2s ease-in-out infinite;
+}
+
+@keyframes anim-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.7; }
+}
+
+/* Background loop (animated pattern) */
+.animate-bg-loop {
+  animation: anim-bg-loop 20s linear infinite;
+}
+
+@keyframes anim-bg-loop {
+  0%   { background-position: 0 0; }
+  100% { background-position: 100px 100px; }
+}
+
+/* Slide in from top */
+.animate-slide-top {
+  animation: anim-slide-top 0.4s ease-out forwards;
+}
+
+@keyframes anim-slide-top {
+  0%   { transform: translateY(-20px); opacity: 0; }
+  100% { transform: translateY(0);     opacity: 1; }
+}
+
+/* List enter animation (item pops into list) */
+.animate-list-enter {
+  animation: anim-list-enter 0.3s ease-out forwards;
+}
+
+@keyframes anim-list-enter {
+  0%   { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+
+/* ==========================================================================
+   SECTION 35 — MOBILE GAME INTERFACE
+   ========================================================================== */
+
+/* Mobile menu button */
+.mobile-menu-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: rgba(32,38,57,.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.9;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.mobile-menu-btn__icon {
+  width: 2rem;
+  height: 2rem;
+}
+
+/* Mobile fullscreen toggle */
+.mobile-fullscreen {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 100;
+  pointer-events: auto;
+}
+
+@media (max-width: 1025px) {
+  .text-soc { display: none; }
+}
+
+@media (max-width: 1000px) {
+  .top-bar          { max-height: 3.4rem; }
+  .top-bar .home    { width: 4rem; height: 3.4rem; }
+  .top-bar .icon-home { width: 2rem; height: 2rem; }
+  .top-bar .close   { width: 3.4rem; height: 3.4rem; border-radius: 0; }
+  .top-bar .icon-close { width: 2.2rem; height: 2.2rem; }
+}
+
+
+/* ==========================================================================
+   SECTION 36 — UTILITY CLASSES (MISC)
+   ========================================================================== */
+
+/* Truncate text */
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Visually hidden (accessible) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
+/* No select */
+.no-select {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Cursor */
+.cursor-pointer { cursor: pointer; }
+.cursor-default { cursor: default; }
+
+/* Margin/padding utilities */
+.m-0  { margin: 0; }
+.mt-1 { margin-top: var(--space-1); }
+.mt-2 { margin-top: var(--space-2); }
+.mt-4 { margin-top: var(--space-4); }
+.mt-5 { margin-top: var(--space-5); }
+.mb-2 { margin-bottom: var(--space-2); }
+.mb-4 { margin-bottom: var(--space-4); }
+.mb-5 { margin-bottom: var(--space-5); }
+.ml-2 { margin-left: var(--space-2); }
+.ml-4 { margin-left: var(--space-4); }
+.mr-2 { margin-right: var(--space-2); }
+.mr-4 { margin-right: var(--space-4); }
+.p-0  { padding: 0; }
+.p-2  { padding: var(--space-2); }
+.p-4  { padding: var(--space-4); }
+.p-5  { padding: var(--space-5); }
+.px-4 { padding-left: var(--space-4); padding-right: var(--space-4); }
+.py-2 { padding-top: var(--space-2); padding-bottom: var(--space-2); }
+.py-4 { padding-top: var(--space-4); padding-bottom: var(--space-4); }
+
+/* Border radius utilities */
+.rounded-sm  { border-radius: var(--radius-sm); }
+.rounded-md  { border-radius: var(--radius-md); }
+.rounded-lg  { border-radius: var(--radius-lg); }
+.rounded-xl  { border-radius: var(--radius-xl); }
+.rounded-2xl { border-radius: var(--radius-2xl); }
+.rounded-full{ border-radius: var(--radius-pill); }
+
+/* Display */
+.block        { display: block; }
+.inline-flex  { display: inline-flex; }
+.hidden       { display: none; }
+
+/* Backgrounds */
+.bg-panel-1  { background-color: var(--panel-1); }
+.bg-panel-2  { background-color: var(--panel-2); }
+.bg-panel-3  { background-color: var(--panel-3); }
+.bg-gold     { background-color: var(--gold-1); }
+.bg-red      { background-color: var(--red-1); }
+.bg-blue     { background-color: var(--blue-4); }
+.bg-green    { background-color: var(--green-1); }
+.bg-dark     { background-color: var(--black-5); }
+.bg-glass    { background: rgba(47,57,87,.7); }

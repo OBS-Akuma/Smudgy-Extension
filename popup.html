@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Smudgy Client</title>
+  <!-- Kirka UI Framework - meow.css -->
+  <link rel="stylesheet" href="/meow.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      width: 380px;
+      background: var(--bg-main, #26335b);
+      color: var(--white, #fff);
+      font-family: var(--font-body, 'Exo 2', sans-serif);
+      overflow-x: hidden;
+    }
+
+    .section {
+      padding: 12px 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .section-title {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--gold-1, #ffb914);
+      margin-bottom: 12px;
+      font-family: var(--font-display, 'Rowdies', sans-serif);
+    }
+
+    .toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      padding: 6px 8px;
+      background: rgba(47,57,87,0.4);
+      border-radius: 6px;
+    }
+
+    .toggle-label {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .toggle-desc {
+      font-size: 10px;
+      color: var(--gray-2, #bdbdbd);
+      margin-top: 2px;
+    }
+
+    .toggle {
+      position: relative;
+      width: 40px;
+      height: 20px;
+    }
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #2a3560;
+      border-radius: 20px;
+      border: 1px solid #4d5c8b;
+      transition: 0.2s;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 14px;
+      width: 14px;
+      left: 2px;
+      bottom: 2px;
+      background-color: #8892b0;
+      border-radius: 50%;
+      transition: 0.2s;
+    }
+    input:checked + .slider {
+      background-color: #1a4a2e;
+      border-color: var(--green-1, #1cce6c);
+    }
+    input:checked + .slider:before {
+      transform: translateX(20px);
+      background-color: var(--green-1, #1cce6c);
+    }
+
+    .css-input-group {
+      margin-bottom: 12px;
+    }
+    .css-input-group label {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--gold-1, #ffb914);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+    .css-input-group textarea,
+    .css-input-group input {
+      width: 100%;
+      padding: 8px;
+      background: var(--panel-3, #202639);
+      border: 1px solid var(--panel-6, #26335b);
+      border-radius: 4px;
+      color: var(--gray-1, #f2f2f2);
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 11px;
+    }
+    .css-actions {
+      display: flex;
+      gap: 6px;
+      margin-top: 6px;
+    }
+    .css-actions button {
+      flex: 1;
+      padding: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      background: var(--panel-4, #3c4b68);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .css-actions button:hover {
+      background: var(--panel-2, #37477c);
+    }
+
+    .btn-primary {
+      background: var(--gold-1, #ffb914);
+      color: #1a2035;
+      font-weight: 800;
+      font-family: var(--font-display, 'Rowdies', sans-serif);
+      border-radius: 6px;
+      padding: 8px;
+      width: 100%;
+      border: none;
+      margin-bottom: 6px;
+      cursor: pointer;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+    .btn-primary:hover { background: #e6a700; }
+    .btn-secondary {
+      background: var(--panel-5, #3b4975);
+      color: white;
+      font-weight: 600;
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .btn-secondary:hover { background: #2f3b5e; }
+    .btn-danger {
+      background: #8b3a3a;
+      color: white;
+      font-weight: 600;
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    .btn-danger:hover { background: #6b2a2a; }
+
+    .status-bar {
+      background: rgba(32,38,57,0.9);
+      padding: 8px 12px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid var(--gold-1);
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--green-1);
+      box-shadow: 0 0 3px var(--green-1);
+    }
+    .status-dot.loading { background: var(--gold-1); box-shadow: none; }
+    .status-dot.error   { background: var(--red-1); }
+    .badge-count {
+      background: var(--gold-1);
+      color: #1a2035;
+      font-size: 11px;
+      font-weight: bold;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-left: auto;
+    }
+
+    .header {
+      background: var(--panel-3, #202639);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--gold-1);
+    }
+    .header h1 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--gold-1);
+      font-family: var(--font-display, 'Rowdies', sans-serif);
+    }
+
+    .footer {
+      padding: 10px;
+      text-align: center;
+      font-size: 10px;
+      color: var(--gray-2);
+      background: rgba(0,0,0,0.2);
+    }
+    .footer a {
+      color: var(--gold-1);
+      text-decoration: none;
+    }
+
+    .url-input-group {
+      margin-bottom: 12px;
+    }
+    .url-input-group label {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--gold-1, #ffb914);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+    .url-input-row {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .url-input-row input {
+      flex: 1;
+      padding: 8px;
+      background: var(--panel-3, #202639);
+      border: 1px solid var(--panel-6, #26335b);
+      border-radius: 4px;
+      color: var(--gray-1, #f2f2f2);
+      font-family: 'Monaco', 'Menlo', monospace;
+      font-size: 11px;
+    }
+    .url-input-row button {
+      padding: 8px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      background: var(--panel-4, #3c4b68);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .url-input-row button:hover { background: var(--panel-2, #37477c); }
+
+    .warning-text {
+      font-size: 9px;
+      color: #ffb914;
+      margin-top: 4px;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Smudgy Client</h1>
+    <div style="font-size:10px; background:#ffb91420; padding:2px 6px; border-radius:4px;">Meowza</div>
+  </div>
+
+  <div class="status-bar">
+    <div class="status-dot loading" id="status-dot"></div>
+    <span id="status-text">Loading...</span>
+    <span class="badge-count" id="badge-count" style="display:none">none?</span>
+  </div>
+
+  <!-- ── DISPLAY ─────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-title">DISPLAY</div>
+
+    <div class="toggle-row">
+      <div>
+        <div class="toggle-label">Badges</div>
+        <div class="toggle-desc">Show player badges</div>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="toggle-badges" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="toggle-row">
+      <div>
+        <div class="toggle-label">Gradients</div>
+        <div class="toggle-desc">Colored name gradients</div>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="toggle-gradients" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="toggle-row">
+      <div>
+        <div class="toggle-label">Animations</div>
+        <div class="toggle-desc">Animated gradients</div>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="toggle-animations" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="toggle-row">
+      <div>
+        <div class="toggle-label">Server Maps</div>
+        <div class="toggle-desc">Show map images on server cards</div>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="toggle-server-maps" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="toggle-row">
+      <div>
+        <div class="toggle-label">Default CSS</div>
+        <div class="toggle-desc">Apply custom default styling</div>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="toggle-default-css" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- ── GAME VISUALS ───────────────────────────────────── -->
+  <div class="section">
+    <div class="section-title">GAME VISUALS</div>
+
+    <div class="toggle-row">
+      <div>
+        <div class="toggle-label">UI Animations</div>
+        <div class="toggle-desc">Enable transitions & animations</div>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="toggle-ui-animations" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="toggle-row">
+      <div>
+        <div class="toggle-label">Rave Mode</div>
+        <div class="toggle-desc">Rotate canvas hue continuously</div>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="toggle-rave-mode">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="toggle-row">
+      <div>
+        <div class="toggle-label">Hide Chat</div>
+        <div class="toggle-desc">Hide in-game chat box</div>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="toggle-hide-chat">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="toggle-row">
+      <div>
+        <div class="toggle-label">Hide Interface</div>
+        <div class="toggle-desc">Hide HUD, crosshair & scores</div>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="toggle-hide-interface">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="toggle-row">
+      <div>
+        <div class="toggle-label">Skip Loading Screen</div>
+        <div class="toggle-desc">Hide the loading scene overlay</div>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="toggle-skip-loading">
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="url-input-group">
+      <label>Hitmarker Image URL</label>
+      <div class="url-input-row">
+        <input type="text" id="hitmarker-link" placeholder="https://example.com/hitmarker.png">
+        <button id="apply-hitmarker">Apply</button>
+      </div>
+      <small class="warning-text">Custom hitmarker image (replaces default)</small>
+    </div>
+
+    <div class="url-input-group">
+      <label>Killicon Image URL</label>
+      <div class="url-input-row">
+        <input type="text" id="killicon-link" placeholder="https://example.com/killicon.png">
+        <button id="apply-killicon">Apply</button>
+      </div>
+      <small class="warning-text">Custom kill feed icon</small>
+    </div>
+  </div>
+
+  <!-- ── LOBBY ──────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-title">LOBBY</div>
+
+    <div class="toggle-row">
+      <div>
+        <div class="toggle-label">Keybind Reminder</div>
+        <div class="toggle-desc">Show lobby keybind hint</div>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="toggle-lobby-keybind" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="toggle-row">
+      <div>
+        <div class="toggle-label">Spectate Button</div>
+        <div class="toggle-desc">Show spectate eye button</div>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="toggle-spectate-button" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- ── NEWS ──────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-title">NEWS CATEGORIES</div>
+
+    <div class="toggle-row">
+      <div>
+        <div class="toggle-label">General</div>
+        <div class="toggle-desc">Updates & announcements</div>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="toggle-news-general" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="toggle-row">
+      <div>
+        <div class="toggle-label">Events</div>
+        <div class="toggle-desc">In-game events</div>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="toggle-news-event" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="toggle-row">
+      <div>
+        <div class="toggle-label">Promotional</div>
+        <div class="toggle-desc">Special offers</div>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="toggle-news-promotional" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="toggle-row">
+      <div>
+        <div class="toggle-label">Alerts</div>
+        <div class="toggle-desc">Important notices</div>
+      </div>
+      <label class="toggle">
+        <input type="checkbox" id="toggle-news-alert" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- ── CUSTOM CSS ─────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-title">CUSTOM CSS</div>
+
+    <div class="css-input-group">
+      <label>Raw CSS</label>
+      <textarea id="raw-css" rows="3" placeholder=".nickname { font-size: 14px; }"></textarea>
+      <div class="css-actions">
+        <button id="apply-raw-css">Apply</button>
+        <button id="clear-raw-css">Clear</button>
+      </div>
+    </div>
+
+    <div class="css-input-group">
+      <label>CSS Link (URL)</label>
+      <input type="text" id="css-link" placeholder="https://example.com/style.css">
+      <div class="css-actions">
+        <button id="apply-css-link">Apply</button>
+        <button id="remove-css-link">Remove</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── DATA ──────────────────────────────────────────── -->
+  <div class="section">
+    <div class="section-title">DATA</div>
+    <button class="btn-primary" id="btn-refresh">Refresh Badges</button>
+    <button class="btn-secondary" id="btn-clear">Clear Cache</button>
+  </div>
+
+  <div class="footer">
+    Data: <a href="https://github.com/OBS-Akuma/KirkaBadges" target="_blank">KirkaBadges by OBS-Akuma</a>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>     
