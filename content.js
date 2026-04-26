@@ -988,6 +988,32 @@ function applyDefaultCSS() {
   
   const defaultCSS = `
 
+.nickname {
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: nowrap !important;
+  white-space: nowrap !important;
+  overflow: visible !important;
+}
+
+.kirka-nickname-span {
+  white-space: nowrap !important;
+  display: inline-block !important;
+}
+
+.kirka-badges {
+  display: inline-flex !important;
+  flex-shrink: 0 !important;
+  white-space: nowrap !important;
+}
+
+.head-right {
+  white-space: nowrap !important;
+}
+
+.you-head {
+  flex-wrap: nowrap !important;
+}
 .left-icons, .left-interface, .right-interface, .play-content, .logo, .team-section, .invite-right, .invite-left1, .invite-left2, .invite-btn {
   zoom: 0.70;
 }
