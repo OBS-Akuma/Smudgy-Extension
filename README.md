@@ -15,6 +15,16 @@ Per-mention delete button and clear all
 Persists across sessions via localStorage
 Tab flashes gold on new mention (no toast popup)
 
+`Chat Command Autocomplete`
+
+Type `/` in chat to see a suggestion box with all available commands
+Arrow keys, Tab, and Enter to navigate and select
+Click a suggestion to apply it
+Commands: `/inv, /hm, /locate, /flip, /myvotes, /gift, /topgifter, /mygift, /trade cancel, /trade bump, /trade accept, /trade offer my:`
+Smart subcommand filtering typing /trade shows only trade subcommands
+Dismisses automatically when a complete command is typed or Escape is pressed
+Reattaches after SPA navigation
+
 `Friends Page`
 
 Friends sorted by badge tier: image badges → discord-linked only → no badges, with level tiebreaking within each tier
