@@ -1,3 +1,5 @@
+Don't Forget to join the [Discord server meow](https://discord.gg/RPRamwfGFh)
+
 # features
 `Badges & Cosmetics`
 
