@@ -1234,8 +1234,7 @@ function applyDefaultCSS() {
   }
   
   const defaultCSS = `
-
-#app>div.interface.text-2>div.background::before {
+  #app>div.interface.text-2>div.background::before {
     content: "Smu dgy";
     font-family: 'pln';
     letter-spacing: 5px;
@@ -1617,110 +1616,51 @@ async function loadCustomCSS() {
 function applyLobbyCustomizations() {
   if (!settings.customizations || !customizations) return;
 
-  // Handle all player-cont blocks in the lobby (team section + any other lobby slots)
-  const playerConts = document.querySelectorAll(".team-section .player-cont, #team-section .player-cont");
+  // Read the logged-in user's shortId directly from the avatar card — same method as Dawn client
+  const avatarUsernameEl = document.querySelector(".avatar-info .username");
+  const shortIdCard = avatarUsernameEl?.textContent.trim().split("#")[1] || null;
 
-  playerConts.forEach(playerCont => {
-    const headRight = playerCont.querySelector(".head-right");
-    const lobbyNickname = headRight?.querySelector(".nickname");
-    if (!lobbyNickname) return;
+  const lobbyNickname =
+    document.querySelector(".team-section .heads .nickname") ||
+    document.querySelector(".heads .head-right .nickname") ||
+    document.querySelector(".heads .nickname");
+  if (!lobbyNickname) return;
 
-    // Try to get the shortId from a data attribute set by the game, or fall back to currentUser
-    // The lobby player-cont doesn't expose shortId in the DOM directly, so we match by nickname text
-    // For the logged-in player we can match via currentUser; for others we scan all customizations
-    // by checking if the nickname text matches any known username in the badge data.
-    let resolvedShortId = null;
-    let resolvedCustoms = null;
+  if (!shortIdCard) return;
 
-    // First: check if this is the logged-in user's slot
-    if (currentUser) {
-      const nicknameText = lobbyNickname.childNodes[0]?.textContent?.trim() || lobbyNickname.textContent.trim();
-      // Match by username (currentUser.name or nickname field)
-      const currentName = currentUser.name || currentUser.wNmnw || currentUser.nickname || "";
-      if (currentName && nicknameText === currentName) {
-        resolvedShortId = currentUser.shortId || currentUser.wMWWm;
-        resolvedCustoms = getCustomsForId(resolvedShortId);
-      }
+  const customs = getCustomsForId(shortIdCard);
+  if (!customs) return;
+
+  lobbyNickname.style.display = "inline-block";
+  lobbyNickname.style.display = "flex";
+  lobbyNickname.style.alignItems = "flex-end";
+  lobbyNickname.style.gap = "0.25rem";
+  lobbyNickname.style.overflow = "unset";
+
+  if (customs.gradient) {
+    lobbyNickname.style.background = `linear-gradient(${customs.gradient.rot}, ${customs.gradient.stops.join(", ")})`;
+    lobbyNickname.style.backgroundClip = "text";
+    lobbyNickname.style.webkitBackgroundClip = "text";
+    lobbyNickname.style.color = "transparent";
+    lobbyNickname.style.fontWeight = "700";
+    lobbyNickname.style.textShadow = customs.gradient.shadow || "0 0 0 transparent";
+
+    if (settings.animations && customs.animated) {
+      lobbyNickname.style.backgroundSize = "200% 200%";
+      lobbyNickname.style.animation = "kirka-badges-gradient 3s linear infinite";
     }
-
-    // If we couldn't match via currentUser, try matching nickname text against all badge entries
-    if (!resolvedCustoms && customizations) {
-      const nicknameText = lobbyNickname.childNodes[0]?.textContent?.trim() || lobbyNickname.textContent.trim();
-      const match = customizations.find(c => c.name && c.name === nicknameText);
-      if (match) {
-        resolvedShortId = match.shortId;
-        resolvedCustoms = match;
-      }
-    }
-
-    // If still no match and this is the only player-cont, fall back to currentUser
-    if (!resolvedCustoms && currentUser && playerConts.length === 1) {
-      resolvedShortId = currentUser.shortId || currentUser.wMWWm;
-      resolvedCustoms = getCustomsForId(resolvedShortId);
-    }
-
-    if (!resolvedCustoms || !resolvedShortId) return;
-
-    lobbyNickname.style.cssText = "display: flex; align-items: center; gap: 0.25rem; overflow: unset !important;";
-
-    if (resolvedCustoms.gradient) {
-      lobbyNickname.style.background = `linear-gradient(${resolvedCustoms.gradient.rot}, ${resolvedCustoms.gradient.stops.join(", ")})`;
-      lobbyNickname.style.webkitBackgroundClip = "text";
-      lobbyNickname.style.backgroundClip = "text";
-      lobbyNickname.style.webkitTextFillColor = "transparent";
-      lobbyNickname.style.textShadow = resolvedCustoms.gradient.shadow || "0 0 0 transparent";
-      lobbyNickname.style.fontWeight = "700";
-
-      if (settings.animations && resolvedCustoms.animated) {
-        lobbyNickname.style.backgroundSize = "200% 200%";
-        lobbyNickname.style.animation = "kirka-badges-gradient 3s linear infinite";
-      }
-    }
-
-    // Don't re-add badges if already present for the same shortId
-    const existingBadges = lobbyNickname.querySelector(".kirka-badges");
-    if (existingBadges && existingBadges.dataset.shortId === resolvedShortId) return;
-    if (existingBadges) existingBadges.remove();
-
-    const badgesElem = createBadgesContainer(resolvedShortId);
-    badgesElem.style.cssText = "display: flex; gap: 0.25rem; align-items: center; flex-shrink: 0;";
-    lobbyNickname.appendChild(badgesElem);
-    populateBadges(badgesElem, resolvedCustoms, "32px");
-  });
-
-  // Also handle the standalone heads block outside of player-cont (original fallback)
-  const standaloneNickname =
-    document.querySelector(".heads .head-right .nickname:not(.team-section .nickname):not(#team-section .nickname)");
-  if (standaloneNickname && currentUser) {
-    const resolvedShortId = currentUser.shortId || currentUser.wMWWm;
-    const resolvedCustoms = getCustomsForId(resolvedShortId);
-    if (!resolvedCustoms) return;
-
-    standaloneNickname.style.cssText = "display: flex; align-items: center; gap: 0.25rem; overflow: unset !important;";
-
-    if (resolvedCustoms.gradient) {
-      standaloneNickname.style.background = `linear-gradient(${resolvedCustoms.gradient.rot}, ${resolvedCustoms.gradient.stops.join(", ")})`;
-      standaloneNickname.style.webkitBackgroundClip = "text";
-      standaloneNickname.style.backgroundClip = "text";
-      standaloneNickname.style.webkitTextFillColor = "transparent";
-      standaloneNickname.style.textShadow = resolvedCustoms.gradient.shadow || "0 0 0 transparent";
-      standaloneNickname.style.fontWeight = "700";
-
-      if (settings.animations && resolvedCustoms.animated) {
-        standaloneNickname.style.backgroundSize = "200% 200%";
-        standaloneNickname.style.animation = "kirka-badges-gradient 3s linear infinite";
-      }
-    }
-
-    const existingBadges = standaloneNickname.querySelector(".kirka-badges");
-    if (existingBadges && existingBadges.dataset.shortId === resolvedShortId) return;
-    if (existingBadges) existingBadges.remove();
-
-    const badgesElem = createBadgesContainer(resolvedShortId);
-    badgesElem.style.cssText = "display: flex; gap: 0.25rem; align-items: center; flex-shrink: 0;";
-    standaloneNickname.appendChild(badgesElem);
-    populateBadges(badgesElem, resolvedCustoms, "32px");
+  } else {
+    lobbyNickname.style.color = "";
+    lobbyNickname.style.background = "";
   }
+
+  // Skip re-injecting badges if already present for same shortId
+  if (lobbyNickname.querySelector(".kirka-badges")) return;
+
+  const badgesElem = createBadgesContainer(shortIdCard);
+  badgesElem.style.cssText = "display: flex; gap: 0.25rem; align-items: center; width: 0;";
+  lobbyNickname.appendChild(badgesElem);
+  populateBadges(badgesElem, customs, "32px");
 }
 
 // ─── Profile Customizations ───────────────────────────────────────────────────
@@ -1735,10 +1675,10 @@ function applyProfileCustomizations() {
   if (!shortIdRaw) return;
   const shortId = shortIdRaw.split("#")[1];
 
-  const customs = getCustomsForId(shortId);
   const nickname = profile.querySelector(".nickname");
   if (!nickname) return;
 
+  // Wrap raw text node in a span so gradient applies to text only (not badges)
   const textNode = nickname.firstChild;
   if (textNode && textNode.nodeType === Node.TEXT_NODE) {
     const span = document.createElement("span");
@@ -1749,11 +1689,24 @@ function applyProfileCustomizations() {
 
   nickname.style.cssText += "display: flex; align-items: flex-end; gap: 0.25rem; overflow: unset !important;";
 
+  const customs = getCustomsForId(shortId);
   if (!customs) return;
 
+  // Apply gradient to the inner span (text only), not the container
   const span = nickname.querySelector(".kirka-nickname-span");
   if (span && customs.gradient) {
-    applyGradientToElement(span, customs.gradient, customs.animated);
+    span.style.display = "inline-block";
+    span.style.background = `linear-gradient(${customs.gradient.rot}, ${customs.gradient.stops.join(", ")})`;
+    span.style.backgroundClip = "text";
+    span.style.webkitBackgroundClip = "text";
+    span.style.color = "transparent";
+    span.style.fontWeight = "700";
+    span.style.textShadow = customs.gradient.shadow || "0 0 0 transparent";
+
+    if (settings.animations && customs.animated) {
+      span.style.backgroundSize = "200% 200%";
+      span.style.animation = "kirka-badges-gradient 3s linear infinite";
+    }
   }
 
   let badgesElem = nickname.querySelector(".kirka-badges");
@@ -2116,31 +2069,35 @@ function applyFriendsCustomizations() {
     const nickname = friend.querySelector(".nickname");
     if (!nickname) return;
 
-    nickname.style.cssText = `
-      display: flex !important;
-      align-items: flex-end !important;
-      gap: 0.25rem !important;
-      overflow: unset !important;
-    `;
+    // Base layout styles
+    nickname.style.display = "flex";
+    nickname.style.alignItems = "flex-end";
+    nickname.style.gap = "0.25rem";
+    nickname.style.overflow = "unset";
 
     if (customs.gradient) {
-      nickname.style.cssText += `
-        max-width: min-content !important;
-        flex-direction: row !important;
-        background: linear-gradient(${customs.gradient.rot}, ${customs.gradient.stops.join(", ")}) !important;
-        -webkit-background-clip: text !important;
-        -webkit-text-fill-color: transparent !important;
-        text-shadow: ${customs.gradient.shadow || "0 0 0 transparent"} !important;
-        font-weight: 700 !important;
-      `;
+      nickname.style.background = `linear-gradient(${customs.gradient.rot}, ${customs.gradient.stops.join(", ")})`;
+      nickname.style.backgroundClip = "text";
+      nickname.style.webkitBackgroundClip = "text";
+      nickname.style.color = "transparent";
+      nickname.style.fontWeight = "700";
+      nickname.style.textShadow = customs.gradient.shadow || "0 0 0 transparent";
+      nickname.style.maxWidth = "min-content";
+      nickname.style.overflow = "unset";
+
+      if (settings.animations && customs.animated) {
+        nickname.style.backgroundSize = "200% 200%";
+        nickname.style.animation = "kirka-badges-gradient 3s linear infinite";
+      }
     }
 
+    // Skip if badges already present for this shortId
     let badgesElem = nickname.querySelector(".kirka-badges");
     if (badgesElem && badgesElem.dataset.shortId === shortId) return;
-
     if (badgesElem) badgesElem.remove();
+
     badgesElem = createBadgesContainer(shortId);
-    badgesElem.style.width = "0";
+    badgesElem.style.cssText = "display: flex; gap: 0.25rem; align-items: center; width: 0;";
     nickname.appendChild(badgesElem);
     populateBadges(badgesElem, customs, "18px");
   });
