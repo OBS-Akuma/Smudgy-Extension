@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Smudgy Client",
-  "version": "1.0.0",
+  "version": "0.0.4",
   "description": "Moew some thing i keep making =^-^=",
   "permissions": ["storage", "activeTab", "commands"],
   "host_permissions": [
