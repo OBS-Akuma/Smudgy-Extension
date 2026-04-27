@@ -96,15 +96,16 @@ Replace the files in your local folder with the new ones
 Go back to `chrome://extensions` and click the "↻" refresh icon on the extension card
 # Feature Images
 
-<img width="1919" height="911" alt="image" src="https://github.com/user-attachments/assets/cdc0430a-acf5-4d19-96be-2c296a55f7dd" />
+<img width="1919" height="1025" alt="image" src="https://github.com/user-attachments/assets/5bfd0f12-d4b3-418f-b075-48822ffbb90d" />
 <img width="1919" height="911" alt="image" src="https://github.com/user-attachments/assets/57365b59-89f0-49a7-91ba-dbc854244ec7" />
 <img width="1919" height="911" alt="image" src="https://github.com/user-attachments/assets/01e2681b-2a20-40a4-be91-fe6eb121daf8" />
 <img width="1919" height="911" alt="image" src="https://github.com/user-attachments/assets/c0476ec1-3f7a-4a81-8d00-cdb72300c69b" />
 <img width="1919" height="911" alt="image" src="https://github.com/user-attachments/assets/fd1241ed-8627-41f0-b51f-82d3f4cc8019" />
 <img width="575" height="784" alt="image" src="https://github.com/user-attachments/assets/1bc9cdf1-065c-4056-858d-714ce03e816f" />
 <img width="775" height="570" alt="image" src="https://github.com/user-attachments/assets/322e04e1-f952-4d38-939f-7bb2e9d7039b" />
-<img width="384" height="602" alt="image" src="https://github.com/user-attachments/assets/16593e74-b154-4792-bfd6-5543cc605c13" />
+<img width="373" height="596" alt="image" src="https://github.com/user-attachments/assets/639f3929-19c9-458c-a44c-6dfb382d4d61" />
 <img width="490" height="385" alt="image" src="https://github.com/user-attachments/assets/46acf20e-0d28-4769-9750-1941fe548e52" />
+
 
 # Known Bugs
 
