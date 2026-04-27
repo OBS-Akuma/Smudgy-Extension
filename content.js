@@ -1244,6 +1244,410 @@ function applyDefaultCSS() {
   }
   
   const defaultCSS = `
+  
+
+.content>.store>.content>#carousel .slider-container.swiper-container-horizontal .slider-touch .slider-wrapper .slide.slider-item .character-card-cont img {
+    transition: transform 0.2s ease, filter 0.1s ease;
+
+}
+
+.content>.store>.content>#carousel .slider-container.swiper-container-horizontal .slider-touch .slider-wrapper .slide.slider-item .character-card-cont .character-card:hover img {
+    filter: drop-shadow(0 0 3px white);
+    transform: scale(1.03)
+}
+
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .text-1.header .v-popover {
+    display: none
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .text-1.header {
+    display: flex;
+    justify-content: center;
+    font-family: Omnitrinx;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    position: relative;
+    overflow: hidden;
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .text-1.header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, #cc0000, #cc0, #cc0000);
+    background-size: 400% 400%;
+    animation: headerGradientFlow 8s ease-in-out infinite;
+    filter: blur(10px);
+    z-index: -2;
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .text-1.header::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.49);
+    backdrop-filter: blur(10px);
+    z-index: -1;
+}
+
+@keyframes headerGradientFlow {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    25% {
+        background-position: 100% 0%;
+    }
+
+    50% {
+        background-position: 100% 100%;
+    }
+
+    75% {
+        background-position: 0% 100%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .weapons-cont .weapon-cont {
+    overflow: hidden;
+    border-radius: 0 !important
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .weapons-cont .weapon-cont .grad-weapon.EPIC,
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .weapons-cont .weapon-cont .grad-weapon.MYTHICAL {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .weapons-cont .weapon-cont .grad-weapon.EPIC:before,
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .weapons-cont .weapon-cont .grad-weapon.MYTHICAL::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(234, 106, 106, .74), transparent);
+    animation: shineSwipe 1.7s infinite;
+    z-index: 0
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .weapons-cont .weapon-cont .grad-weapon.EPIC:before {
+    background: linear-gradient(120deg, transparent, rgba(211, 106, 234, .74), transparent);
+}
+
+@keyframes shineSwipe {
+    0% {
+        left: -100%;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .weapons-cont .weapon-cont .grad-weapon.EPIC:after,
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .weapons-cont .weapon-cont .grad-weapon.MYTHICAL::after {
+    content: "";
+    position: absolute;
+    background: var(--cp-grey);
+    width: 95%;
+    height: 90%
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .weapons-cont .weapon-cont .name-change {
+    font-family: Omnitrinx;
+    letter-spacing: 2px;
+    opacity: 0.6;
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .weapons-cont .weapon-cont .rarity-weapon {
+    font-family: Omnitrinx;
+    letter-spacing: 2px;
+    left: 0.55rem;
+    top: 0.4rem;
+    background: rgba(0, 0, 0, .7);
+    padding: 2px 6px;
+    font-size: 0.9rem;
+    clip-path: polygon(0 0, 100% 0, 100% 70%, 85% 100%, 0 100%);
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .weapons-cont .weapon-cont img {
+    transition: transform 0.2s ease, filter 0.1s ease;
+    transform: translate(0, -0.5rem)
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .weapons-cont .weapon-cont:hover img {
+    transform: translate(0, -0.78rem) scale(1.05);
+    filter: drop-shadow(0 0 2px white);
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .weapons-cont .weapon-cont .weapon-skin {
+    font-family: Omnitrinx;
+    letter-spacing: 2px;
+    background: rgba(0, 0, 0, .7);
+    padding: 2px 6px;
+    font-size: 0.94rem;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 15% 100%, 0 70%);
+    right: 0.5rem;
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .weapons-cont .weapon-cont:hover .weapon-skin {
+    display: none
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .weapons-cont .weapon-cont .weapon-price svg {
+    display: none
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .weapons-cont .weapon-cont .weapon-price {
+    font-family: Belikan;
+    font-size: 1.25rem;
+    right: 0.5rem;
+    top: 0.3rem;
+    height: fit-content;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 15% 100%, 0 70%);
+    letter-spacing: 2px;
+    background: rgba(0, 0, 0, .7);
+    padding: 2px 17px 2px 6px;
+    display: none;
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .weapons-cont .weapon-cont .weapon-price::after {
+    content: "";
+    width: 10px;
+    height: 10px;
+    background: var(--cp-blue);
+    transform: rotate(45deg);
+    position: absolute;
+    bottom: 0.65rem;
+    right: 0.3rem;
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .weapons-cont .weapon-cont:hover .weapon-price {
+    display: block
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .skin-body .hover,
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .weapons-cont .weapon-cont .skin {
+    background: #fff0 !important;
+    flex-direction: row;
+    gap: 0rem;
+    height: fit-content;
+    bottom: 0.5rem !important;
+    position: absolute !important;
+    top: unset;
+    padding: 0 0.6rem;
+    transform: translateY(10rem);
+    transition: transform 0.2s ease;
+    display: flex;
+
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .skin-body:hover .hover,
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .weapons-cont .weapon-cont:hover .skin {
+    transform: translateY(0);
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .skin-body .button.buy-btn,
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .skin-body .button.inspect-btn,
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .weapons-cont .weapon-cont .skin .button.buy-skin-weapon,
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .weapons-cont .weapon-cont .skin .button.inspect-skin-weapon {
+    width: 100%;
+    height: 2rem;
+    background: rgba(0, 0, 0, .51) !important;
+    backdrop-filter: blur(8px);
+    font-family: Belikan;
+    letter-spacing: 2px;
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .skin-body .button.buy-btn:hover,
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .weapons-cont .weapon-cont .skin .button.buy-skin-weapon:hover {
+    background: var(--cp-yellow2) !important
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .skin-body .button.inspect-btn:hover,
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .weapons-cont .weapon-cont .skin .button.inspect-skin-weapon:hover {
+    background: var(--cp-blue2) !important
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .skin-body.MYTHICAL,
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .skin-body.LEGENDARY {
+    border-radius: 0;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .skin-body.MYTHICAL {
+    background: linear-gradient(135deg, #330000, #660000, #cc0000, #ff4444, #cc0000, #660000);
+    background-size: 400% 400%;
+    animation: mythicalGlow 4s ease-in-out infinite;
+    border: 6px solid #c5061e;
+    box-shadow: 0 0 20px rgba(204, 0, 0, 0.5);
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .skin-body.LEGENDARY {
+    background: linear-gradient(135deg, #946f00, #c79f00, #baba00, #c79f00, #ba8c00, #946300);
+    background-size: 400% 400%;
+    animation: legendaryGlow 3s ease-in-out infinite;
+    border: 6px solid #ffb72d;
+    box-shadow: 0 0 20px rgba(255, 204, 0, 0.5);
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .skin-body.MYTHICAL:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 30px rgba(204, 0, 0, 0.8);
+    animation-duration: 2s;
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .skin-body.LEGENDARY:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 30px rgba(255, 204, 0, 0.8);
+    animation-duration: 1.5s;
+}
+
+@keyframes mythicalGlow {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+@keyframes legendaryGlow {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .skin-body.LEGENDARY .name-body,
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .skin-body.MYTHICAL .name-body {
+    width: 100%;
+    height: 2.1rem;
+    left: 0;
+    bottom: 0;
+    font-family: Omnitrinx;
+    letter-spacing: 2px;
+    text-shadow:
+        -1px -1px 0 black,
+        1px -1px 0 black,
+        -1px 1px 0 black,
+        1px 1px 0 black;
+    font-size: 1.75rem;
+    background: rgba(0, 0, 0, .46);
+    clip-path: polygon(10% 0, 90% 0, 100% 100%, 0% 100%);
+    backdrop-filter: blur(2px);
+    transition: all 0.3s ease;
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .rarity-body {
+    width: 100%;
+    left: 0;
+    top: 0;
+    font-family: Omnitrinx;
+    letter-spacing: 2px;
+    text-shadow:
+        -1px -1px 0 black,
+        1px -1px 0 black,
+        -1px 1px 0 black,
+        1px 1px 0 black;
+    font-size: 1.5rem;
+    background: rgba(0, 0, 0, .46);
+    clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
+    backdrop-filter: blur(2px);
+    transition: all 0.3s ease;
+    height: 2rem;
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .price {
+    display: none;
+    width: 100%;
+    left: 0;
+    top: 0;
+    font-family: Omnitrinx;
+    letter-spacing: 2px;
+    text-shadow:
+        -1px -1px 0 black,
+        1px -1px 0 black,
+        -1px 1px 0 black,
+        1px 1px 0 black;
+    background: rgba(0, 0, 0, .46);
+    clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
+    backdrop-filter: blur(2px);
+    transition: all 0.3s ease;
+    height: 2rem;
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .price svg {
+    display: none
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .price .price-value {
+    font-size: 1.3rem;
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .price .price-value::after {
+    content: "";
+    width: 10px;
+    height: 10px;
+    background: var(--cp-blue);
+    transform: rotate(45deg) translate(-56%, -60%);
+    top: 56%;
+    left: 60%;
+    position: absolute
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .skin-body.LEGENDARY:hover .name-body,
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .skin-body.MYTHICAL:hover .name-body,
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .skin-body.MYTHICAL:hover .rarity-body,
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .skin-body.LEGENDARY:hover .rarity-body {
+    display: none
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .skin-body.MYTHICAL:hover img,
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .skin-body.LEGENDARY:hover img {
+    transform: translate(0, -0.78rem) scale(1.05);
+    filter: drop-shadow(0 0 4px #000);
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .skin-body.MYTHICAL:hover .price,
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .skin-body.LEGENDARY:hover .price {
+    display: flex;
+    justify-content: center;
+}
+
+.content>.store>.content>#carouselBundles .slider-wrapper .bundle .skin-body .hover {
+    background: #f000
+}
+
+
 #app>div.interface.text-2>div.background::before {
     content: "Smu dgy";
     font-family: 'pln';
