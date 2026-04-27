@@ -917,18 +917,17 @@ function getBioTextBadgeInfo(shortId) {
 }
 
 function getCurrentProfileShortId() {
-  const badgesContainer = document.querySelector('.kirka-badges');
-  if (badgesContainer && badgesContainer.getAttribute('data-short-id')) {
-    return badgesContainer.getAttribute('data-short-id');
-  }
-
-  const valueElement = document.querySelector('.card-profile .copy-cont .value');
+  // Method 1: Read from the profile card copy element — only present when profile is rendered.
+  // Scoped to .tab-content .profile-cont to avoid grabbing values from other pages.
+  const valueElement = document.querySelector('.tab-content .profile-cont .card-profile .copy-cont .value');
   if (valueElement) {
     const text = valueElement.textContent.trim();
-    if (text.startsWith('#')) return text.substring(1);
-    return text;
+    // Value is "#ABCD1234" — strip the leading #
+    return text.startsWith('#') ? text.substring(1) : text;
   }
 
+  // Method 2: Extract from the URL — reliable fallback.
+  // Matches /profile/ABCD1234 or /profile/%23ABCD1234
   const urlMatch = location.href.match(/\/profile\/(?:%23)?([A-Z0-9]+)/i);
   if (urlMatch) return urlMatch[1];
 
@@ -955,9 +954,16 @@ async function injectBioTextBadge() {
   }
 
   const currentId = getCurrentProfileShortId();
+
+  // Guard: if we couldn't resolve a shortId, bail out completely
+  if (!currentId) {
+    return false;
+  }
+
   const badgeInfo = getBioTextBadgeInfo(currentId);
 
   if (!badgeInfo) {
+    // No biotext entry for this user — remove any leftover badge and reset state
     if (activeBioTextBadgeId !== null) {
       const profileContainer = document.querySelector('.tab-content .profile-cont');
       if (profileContainer) {
@@ -1132,6 +1138,8 @@ async function fetchData() {
 async function loadSettings() {
   return new Promise((resolve) => {
     chrome.storage.local.get([
+      "kb_badges",
+      "kb_animations",
       "kb_server_maps", 
       "kb_default_css",
       "kb_hitmarker_link",
@@ -1144,6 +1152,8 @@ async function loadSettings() {
       "kb_hide_interface",
       "kb_skip_loading"
     ], (result) => {
+      settings.customizations = result.kb_badges !== false;
+      settings.animations = result.kb_animations !== false;
       settings.serverMaps = result.kb_server_maps !== false;
       settings.defaultCSS = result.kb_default_css !== false;
       settings.hitmarker_link = result.kb_hitmarker_link || "";
@@ -1234,7 +1244,7 @@ function applyDefaultCSS() {
   }
   
   const defaultCSS = `
-  #app>div.interface.text-2>div.background::before {
+#app>div.interface.text-2>div.background::before {
     content: "Smu dgy";
     font-family: 'pln';
     letter-spacing: 5px;
