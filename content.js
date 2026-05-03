@@ -1108,10 +1108,10 @@ function juiceSmudgyButton() {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
-//  BADGES PAGE DASHBOARD (/badges)
+//  BADGES PAGE DASHBOARD (/smudgy)
 // ═══════════════════════════════════════════════════════════════════════════════
 
-// Button [0] — navigates to /badges with Smudgy icon + green gradient
+// Button [0] — navigates to /smudgy with Smudgy icon + green gradient
 const fixDiscordButton = () => {
   const btn = document.querySelectorAll(".card-cont.soc-group")[0];
   if (!btn) return;
@@ -1131,7 +1131,7 @@ const fixDiscordButton = () => {
   if (iconEl) { const img = document.createElement("img"); img.src = "https://www.smudgy.store/uploads/icon.png"; img.style.cssText = "width:48px;height:48px;border-radius:12px;object-fit:cover;"; iconEl.replaceWith(img); }
   newBtn.addEventListener("mouseenter", () => { newBtn.style.transform = "translateY(-2px)"; newBtn.style.boxShadow = "0 6px 20px rgba(26, 142, 80, 0.4)"; });
   newBtn.addEventListener("mouseleave", () => { newBtn.style.transform = "translateY(0)"; newBtn.style.boxShadow = "0 4px 15px rgba(26, 142, 80, 0.3)"; });
-  newBtn.onclick = (e) => { e.preventDefault(); e.stopPropagation(); const newUrl = "/badges"; window.history.pushState({}, "", newUrl); window.dispatchEvent(new PopStateEvent("popstate")); window.dispatchEvent(new CustomEvent("urlchange", { detail: { url: newUrl } })); return false; };
+  newBtn.onclick = (e) => { e.preventDefault(); e.stopPropagation(); const newUrl = "/smudgy"; window.history.pushState({}, "", newUrl); window.dispatchEvent(new PopStateEvent("popstate")); window.dispatchEvent(new CustomEvent("urlchange", { detail: { url: newUrl } })); return false; };
   newBtn.style.cursor = "pointer";
 };
 
@@ -1175,7 +1175,7 @@ function renderBadges() {
 }
 
 async function matchKATStyle() {
-  if (!window.location.pathname.includes("/badges")) {
+  if (!window.location.pathname.includes("/smudgy")) {
     isApplied = false;
     const contentDiv = document.querySelector("[data-v-112b925e].content");
     if (contentDiv?.querySelector(".tabs-container")) { contentDiv.innerHTML = ""; contentDiv.removeAttribute("style"); }
@@ -1515,11 +1515,11 @@ window.addEventListener("popstate", () => {
 
 // Badges page URL watcher (polls until DOM is ready)
 setInterval(() => {
-  if (window.location.pathname.includes("/badges") && !isApplied) {
+  if (window.location.pathname.includes("/smudgy") && !isApplied) {
     const contentDiv = document.querySelector("[data-v-112b925e].content");
     if (contentDiv) { matchKATStyle(); fixDiscordButton(); }
   }
-  if (!window.location.pathname.includes("/badges")) fixDiscordButton();
+  if (!window.location.pathname.includes("/smudgy")) fixDiscordButton();
 }, 300);
 
 // Shift+click profile navigation
